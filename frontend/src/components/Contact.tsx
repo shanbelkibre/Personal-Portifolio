@@ -46,7 +46,7 @@ const Contact = () => {
           from_email: formData.email,
           subject: formData.subject || "Portfolio Contact Request",
           message: formData.message,
-          to_email: contact.email,
+          to_email: contact?.email || "",
         },
         emailConfig.publicKey !== "user_public_key_placeholder" ? emailConfig.publicKey : undefined
       );
@@ -62,7 +62,7 @@ const Contact = () => {
       // Friendly fallback notification and mailto launch
       toast.success("Opening your mail app to send email directly...");
       window.open(
-        `mailto:${contact.email}?subject=${encodeURIComponent(
+        `mailto:${contact?.email || ""}...?subject=${encodeURIComponent(
           formData.subject || "Freelance Request from " + formData.name
         )}&body=${encodeURIComponent(
           `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -102,10 +102,10 @@ const Contact = () => {
                 <div>
                   <h3 className="font-bold text-foreground text-base">Direct Email</h3>
                   <a
-                    href={`mailto:${contact.email}`}
+                    href={`mailto:${contact?.email || ""}`}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors break-all font-medium"
                   >
-                    {contact.email}
+                    {contact?.email || "Loading..."}
                   </a>
                 </div>
               </div>
@@ -117,10 +117,10 @@ const Contact = () => {
                 <div>
                   <h3 className="font-bold text-foreground text-base">Phone & WhatsApp</h3>
                   <a
-                    href={`tel:${contact.phone.replace(/\s+/g, "")}`}
+                    href={`tel:${contact?.phone?.replace(/\s+/g, "") || ""}`}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
                   >
-                    {contact.phone}
+                    {contact?.phone || "Loading..."}
                   </a>
                 </div>
               </div>
@@ -131,7 +131,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground text-base">Location</h3>
-                  <p className="text-sm text-muted-foreground font-medium">{contact.location}</p>
+                  <p className="text-sm text-muted-foreground font-medium">{contact?.location || "Loading..."}</p>
                 </div>
               </div>
             </Card>

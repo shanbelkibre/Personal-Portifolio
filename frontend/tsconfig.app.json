@@ -24,11 +24,11 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": [
-        "frontend/src/*"
+        "./src/*"
       ]
     }
   },
   "include": [
-    "frontend/src"
+    "src"
   ]
 }

@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { hashPasscode, verifyPasscode } from "@/lib/crypto";
 
 import houseRental from "@/assets/houserntal.jpg";
 import ethioIntern from "@/assets/Ethiointern.jpg";
@@ -14,7 +13,7 @@ export interface Project {
   tech: string[];
   github?: string;
   demo?: string;
-  image: string;
+  image?: string;
   category?: string;
   featured?: boolean;
 }
@@ -74,7 +73,7 @@ interface CMSContextType {
   setIsAdminLoginOpen: (open: boolean) => void;
   isCMSDrawerOpen: boolean;
   setIsCMSDrawerOpen: (open: boolean) => void;
-  login: (passcode: string) => Promise<boolean>;
+  login: (password: string) => Promise<boolean>;
   logout: () => void;
   updatePasskey: (newPass: string) => Promise<void>;
 
@@ -86,15 +85,15 @@ interface CMSContextType {
   contact: ContactData;
   emailjs: EmailJSConfig;
   theme: ThemeConfig;
+  isLoading: boolean;
 
+  // Stubs for Admin operations
   addProject: (project: Omit<Project, "id">) => void;
   updateProject: (id: string, updated: Partial<Project>) => void;
   deleteProject: (id: string) => void;
-
   addExperience: (exp: Omit<ExperienceItem, "id">) => void;
   updateExperience: (id: string, updated: Partial<ExperienceItem>) => void;
   deleteExperience: (id: string) => void;
-
   updateHero: (data: Partial<HeroData>) => void;
   updateAbout: (data: Partial<AboutData>) => void;
   updateContact: (data: Partial<ContactData>) => void;
@@ -105,170 +104,6 @@ interface CMSContextType {
   importBackup: (jsonString: string) => boolean;
 }
 
-const DEFAULT_PROJECTS: Project[] = [
-  {
-    id: "house-rental",
-    title: "Ethiopian House Rental System (INSA Summer Camp Project)",
-    description:
-      "A full-stack property rental platform with property listings, search, filtering, role-based authentication, and owner/renter communication features.",
-    longDescription:
-      "Developed during the INSA Summer Camp, this full-stack property rental platform connects house owners and renters. It features role-based access for owners, renters/buyers, and administrators, along with robust RESTful APIs, database architecture, and responsive frontend interfaces.",
-    features: [
-      "Property listing, search, filtering, and favorites",
-      "Role-based access for owners, renters/buyers, and administrators",
-      "RESTful APIs and custom database architecture",
-      "Real-time owner and renter communication workflows",
-    ],
-    tech: ["Laravel", "React", "MySQL", "Tailwind CSS", "Sanctum", "REST API"],
-    github: "https://github.com/shanbelkibre/house_rental_system",
-    demo: "https://house-rental-system-ten.vercel.app/",
-    image: houseRental,
-    category: "Full-Stack Web App",
-    featured: true,
-  },
-  {
-    id: "ethio-internship",
-    title: "Ethio Internship Platform (DBU Hackathon 3rd Place Winner)",
-    description:
-      "A hackathon-winning internship platform connecting students, companies, and universities for internship opportunities.",
-    longDescription:
-      "Engineered during the 2017 E.C. Debre Birhan University Hackathon (3rd Place Winner), Ethio Internship solves the internship gap in Ethiopian higher education with profile management, internship posting, applications, and tracking.",
-    features: [
-      "3-Way portal for students, partner companies, and university admins",
-      "Internship posting, application submissions, and status tracking",
-      "Smart search and filtering across internship opportunities",
-      "Local storage sync & progressive web capabilities",
-    ],
-    tech: ["HTML5", "CSS3", "JavaScript (ES6)", "LocalStorage API", "Tailwind CSS"],
-    github: "https://github.com/shambelkibr/EthioInterShip_platform_DBU_Hackton",
-    demo: "https://ethio-inter-ship-platform.vercel.app/",
-    image: ethioIntern,
-    category: "Web Platform",
-    featured: true,
-  },
-  {
-    id: "react-portfolio",
-    title: "Modern Full-Stack & Cybersecurity Portfolio",
-    description:
-      "A sleek, responsive personal portfolio showcasing modern web engineering, customizable color tokens, project deep dives, and keyboard-activated admin CMS.",
-    longDescription:
-      "Designed to represent top-tier freelance standards. Includes dynamic glassmorphism design tokens, full client-side CMS capability with secret keyboard triggers, and responsive interactive cards.",
-    features: [
-      "Dynamic color theme preset switching (Cyan, Emerald, Violet, Amber, Blue)",
-      "Keyboard shortcut Ctrl+Shift+A for Admin CMS suite",
-      "Modal-based project deep dive with rich media showcase",
-      "Client-side LocalStorage data persistence with JSON export/import",
-    ],
-    tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
-    github: "https://github.com/shambelkibr/my-Portfolio-by-React",
-    demo: "https://shanbelkibremyportfolio.vercel.app/",
-    image: portfolio,
-    category: "Frontend UI",
-    featured: true,
-  },
-];
-
-const DEFAULT_EXPERIENCES: ExperienceItem[] = [
-  {
-    id: "exp-1",
-    role: "Full Stack Developer",
-    company: "Ethiopian House Rental System (INSA Summer Camp Project)",
-    period: "2025 - 2026",
-    description:
-      "Developed a full-stack property rental platform connecting house owners and renters in Debre Birhan town.",
-    achievements: [
-      "Developed a property rental platform with property listing, search, filtering, authentication, and communication features.",
-      "Implemented role-based access for property owners, renters/buyers, and administrators.",
-      "Designed RESTful APIs, database architecture, and responsive frontend interfaces.",
-    ],
-    skills: ["Laravel", "React", "MySQL", "REST APIs", "Tailwind CSS"],
-  },
-  {
-    id: "exp-2",
-    role: "Full Stack Developer",
-    company: "Debre Birhan Town E-Commerce Platform (Internship Project)",
-    period: "2025",
-    description:
-      "Built an e-commerce platform supporting product management, search, shopping cart, orders, and authentication.",
-    achievements: [
-      "Built an e-commerce platform supporting product management, search, shopping cart, orders, authentication, and administration.",
-      "Developed responsive interfaces and backend APIs for managing users, products, categories, and orders.",
-    ],
-    skills: ["React", "Node.js", "Express.js", "MongoDB", "REST APIs"],
-  },
-  {
-    id: "exp-3",
-    role: "Full Stack Developer",
-    company: "Debre Birhan University Clearance Management System (2nd Year Final Project)",
-    period: "2024 - 2025",
-    description:
-      "Developed a digital clearance workflow connecting students, university departments, and administrators.",
-    achievements: [
-      "Developed a digital clearance workflow connecting students, university departments, and administrators.",
-      "Implemented role-based approval, clearance tracking, dashboards, and status management to reduce manual processes.",
-    ],
-    skills: ["PHP", "MySQL", "JavaScript", "HTML5/CSS3", "Bootstrap"],
-  },
-  {
-    id: "exp-4",
-    role: "Full Stack Developer",
-    company: "Ethio Internship Platform (DBU Hackathon 3rd Winner)",
-    period: "2024 - 2025",
-    description:
-      "Built a platform connecting university students, universities, and companies for internship opportunities.",
-    achievements: [
-      "Built a platform connecting university students, universities, and companies for internship opportunities.",
-      "Implemented profiles, internship postings, applications, search/filtering, and application tracking.",
-    ],
-    skills: ["JavaScript ES6", "HTML5", "CSS3", "LocalStorage API"],
-  },
-];
-
-const DEFAULT_CERTIFICATIONS: CertificationItem[] = [
-  {
-    id: "cert-1",
-    title: "Cyber Security Student – GTST, Round 14",
-    issuer: "Global Talent Security Training (GTST)",
-    year: "2025",
-  },
-  {
-    id: "cert-2",
-    title: "INSA Talent Summer Camp Student – 5th Round, 2018 E.C.",
-    issuer: "Information Network Security Administration (INSA)",
-    year: "2025 - 2026",
-  },
-  {
-    id: "cert-3",
-    title: "DBU Hackathon, 2017 E.C. – 3rd Place, Innovation and Creativity",
-    issuer: "Debre Birhan University",
-    year: "2024 - 2025",
-  },
-];
-
-const DEFAULT_HERO: HeroData = {
-  name: "Shanbel Kibre",
-  badgeText: "Available for freelance & full-stack roles",
-  subtitle: "Software Engineer & Full-Stack Developer",
-  bio: "Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities.",
-  githubUrl: "https://github.com/shanbelkibre",
-  linkedinUrl: "https://www.linkedin.com/in/shanbel-kibre/",
-};
-
-const DEFAULT_ABOUT: AboutData = {
-  paragraphs: [
-    "I am a Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities to safeguard systems.",
-    "Fascinated by learning new technologies and passionate about solving complex problems through innovative, practical solutions. I specialize in React, Next.js, Node.js, Express, NestJS, Laravel, MongoDB, MySQL, and PostgreSQL.",
-    "Pursuing a Bachelor of Science in Software Engineering (Harmonized Modular Curriculum) at Debre Birhan University. Recognized as 3rd Place Winner in DBU Hackathon and participant in INSA Talent Summer Camp.",
-  ],
-};
-
-const DEFAULT_CONTACT: ContactData = {
-  email: "Shambel5110@gmail.com",
-  phone: "094 6340 709 / +251 962 585 655",
-  location: "Addis Ababa & Debre Birhan, Ethiopia",
-};
-
-// Read Environment variables from Vite .env if present
 const DEFAULT_EMAILJS: EmailJSConfig = {
   serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_portfolio",
   templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_contact",
@@ -281,156 +116,99 @@ const DEFAULT_THEME: ThemeConfig = {
 
 const CMSContext = createContext<CMSContextType | undefined>(undefined);
 
-const STORAGE_KEYS = {
-  PASSKEY_HASH: "sk_cms_passkey_hash_v2",
-  AUTH: "sk_cms_admin_auth",
-  PROJECTS: "sk_cms_projects_v2",
-  EXPERIENCES: "sk_cms_experiences",
-  CERTIFICATIONS: "sk_cms_certifications",
-  HERO: "sk_cms_hero",
-  ABOUT: "sk_cms_about",
-  CONTACT: "sk_cms_contact",
-  EMAILJS: "sk_cms_emailjs",
-  THEME: "sk_cms_theme",
-};
-
 export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(() => {
-    return localStorage.getItem(STORAGE_KEYS.AUTH) === "true";
+    return !!localStorage.getItem("admin_token");
   });
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState<boolean>(false);
   const [isCMSDrawerOpen, setIsCMSDrawerOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [passkeyHash, setPasskeyHash] = useState<string>(() => {
-    return localStorage.getItem(STORAGE_KEYS.PASSKEY_HASH) || import.meta.env.VITE_ADMIN_PASSCODE || "admin123";
-  });
+  // Data states
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
+  const [certifications, setCertifications] = useState<CertificationItem[]>([]);
+  const [hero, setHero] = useState<HeroData>({} as HeroData);
+  const [about, setAbout] = useState<AboutData>({ paragraphs: [] });
+  const [contact, setContact] = useState<ContactData>({} as ContactData);
+  const [emailjs, setEmailJSState] = useState<EmailJSConfig>(DEFAULT_EMAILJS);
+  const [theme, setThemeState] = useState<ThemeConfig>(DEFAULT_THEME);
 
-  const [projects, setProjects] = useState<Project[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.PROJECTS);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_PROJECTS;
-  });
+  // Fetch data from Backend API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/portfolio");
+        if (!response.ok) throw new Error("Failed to fetch portfolio data");
+        const data = await response.json();
 
-  const [experiences, setExperiences] = useState<ExperienceItem[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.EXPERIENCES);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_EXPERIENCES;
-  });
+        if (data.projects) {
+          // Fallback images since they aren't stored as files in DB yet
+          const mappedProjects = data.projects.map((p: any, index: number) => ({
+            ...p,
+            image: index === 0 ? houseRental : (index === 1 ? ethioIntern : portfolio)
+          }));
+          setProjects(mappedProjects);
+        }
+        if (data.experiences) setExperiences(data.experiences);
+        if (data.certifications) setCertifications(data.certifications);
+        if (data.hero) setHero(data.hero);
+        if (data.about) setAbout(data.about);
+        if (data.contact) setContact(data.contact);
+        if (data.theme && data.theme.colorTheme) {
+          setThemeState(data.theme);
+        }
+      } catch (error) {
+        console.error("Error fetching from backend:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const [certifications, setCertifications] = useState<CertificationItem[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.CERTIFICATIONS);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_CERTIFICATIONS;
-  });
-
-  const [hero, setHero] = useState<HeroData>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.HERO);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_HERO;
-  });
-
-  const [about, setAbout] = useState<AboutData>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.ABOUT);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_ABOUT;
-  });
-
-  const [contact, setContact] = useState<ContactData>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.CONTACT);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_CONTACT;
-  });
-
-  const [emailjs, setEmailJSState] = useState<EmailJSConfig>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.EMAILJS);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_EMAILJS;
-  });
-
-  const [theme, setThemeState] = useState<ThemeConfig>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.THEME);
-    if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
-    }
-    return DEFAULT_THEME;
-  });
+    fetchData();
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme-preset", theme.colorTheme);
   }, [theme.colorTheme]);
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
-  }, [projects]);
+  const login = async (password: string): Promise<boolean> => {
+    try {
+      // In the new auth page, we pass username. Hardcoding for backwards compatibility with the old modal if still used.
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: "shanboman", password })
+      });
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.EXPERIENCES, JSON.stringify(experiences));
-  }, [experiences]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CERTIFICATIONS, JSON.stringify(certifications));
-  }, [certifications]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.HERO, JSON.stringify(hero));
-  }, [hero]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.ABOUT, JSON.stringify(about));
-  }, [about]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CONTACT, JSON.stringify(contact));
-  }, [contact]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.EMAILJS, JSON.stringify(emailjs));
-  }, [emailjs]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.THEME, JSON.stringify(theme));
-  }, [theme]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.AUTH, isAdminLoggedIn ? "true" : "false");
-  }, [isAdminLoggedIn]);
-
-  const login = async (inputPasscode: string): Promise<boolean> => {
-    const isValid = await verifyPasscode(inputPasscode, passkeyHash);
-    if (isValid) {
-      setIsAdminLoggedIn(true);
-      setIsAdminLoginOpen(false);
-      setIsCMSDrawerOpen(true);
-      return true;
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("admin_token", data.token);
+        setIsAdminLoggedIn(true);
+        setIsAdminLoginOpen(false);
+        setIsCMSDrawerOpen(true);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("Login failed", e);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {
+    localStorage.removeItem("admin_token");
     setIsAdminLoggedIn(false);
     setIsCMSDrawerOpen(false);
   };
 
   const updatePasskey = async (newPass: string) => {
-    const hashed = await hashPasscode(newPass);
-    setPasskeyHash(hashed);
-    localStorage.setItem(STORAGE_KEYS.PASSKEY_HASH, hashed);
+    // Moved to backend later
+    console.warn("updatePasskey is disabled while migrating to backend");
   };
 
+  // The below functions update local state for the CMS Drawer.
+  // In the future, these should be updated to send PUT/POST/DELETE requests to the backend API.
   const addProject = (project: Omit<Project, "id">) => {
     const newProj: Project = { ...project, id: "proj-" + Date.now() };
     setProjects((prev) => [newProj, ...prev]);
@@ -478,56 +256,16 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetToDefaults = () => {
-    setProjects(DEFAULT_PROJECTS);
-    setExperiences(DEFAULT_EXPERIENCES);
-    setCertifications(DEFAULT_CERTIFICATIONS);
-    setHero(DEFAULT_HERO);
-    setAbout(DEFAULT_ABOUT);
-    setContact(DEFAULT_CONTACT);
-    setEmailJSState(DEFAULT_EMAILJS);
-    setThemeState(DEFAULT_THEME);
-    setPasskeyHash(import.meta.env.VITE_ADMIN_PASSCODE || "admin123");
-    localStorage.clear();
+    console.warn("resetToDefaults is disabled while migrating to backend");
   };
 
   const exportBackup = () => {
-    const backupData = {
-      projects,
-      experiences,
-      certifications,
-      hero,
-      about,
-      contact,
-      emailjs,
-      theme,
-      exportedAt: new Date().toISOString(),
-    };
-    const jsonStr = JSON.stringify(backupData, null, 2);
-    const blob = new Blob([jsonStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `shanbel_portfolio_backup_${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    console.warn("exportBackup is disabled while migrating to backend");
   };
 
   const importBackup = (jsonString: string): boolean => {
-    try {
-      const data = JSON.parse(jsonString);
-      if (data.projects) setProjects(data.projects);
-      if (data.experiences) setExperiences(data.experiences);
-      if (data.certifications) setCertifications(data.certifications);
-      if (data.hero) setHero(data.hero);
-      if (data.about) setAbout(data.about);
-      if (data.contact) setContact(data.contact);
-      if (data.emailjs) setEmailJSState(data.emailjs);
-      if (data.theme) setThemeState(data.theme);
-      return true;
-    } catch (e) {
-      console.error("Invalid backup file", e);
-      return false;
-    }
+    console.warn("importBackup is disabled while migrating to backend");
+    return false;
   };
 
   return (
@@ -549,6 +287,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         contact,
         emailjs,
         theme,
+        isLoading,
         addProject,
         updateProject,
         deleteProject,
@@ -577,3 +316,5 @@ export const useCMS = () => {
   }
   return context;
 };
+
+
