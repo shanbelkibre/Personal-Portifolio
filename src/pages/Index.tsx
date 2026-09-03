@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
+import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 
@@ -14,11 +15,17 @@ const Index = () => {
         <meta name="google-site-verification" content="d91ab87c866db596" />
 
         {/* Basic SEO */}
-        <title>Shanbel Kibre | Full-Stack Developer</title>
-      
-        <meta name="description" content="I'm Shanbel Kibre, an Ethiopian Full-Stack Developer from Debre Birhan, based in Addis Ababa. Specializing in React, TypeScript, Tailwind CSS, and Node.js. Available for freelance and remote work. Explore my projects and let's build something great together." />
-       
-        <meta name="keywords" content="Shanbel Kibre, Shambel Kibre, Shanble Kibre, Shan Kibre, Kibre, Shanbel, Shambel, Full-Stack Developer, Frontend Developer, Backend Developer, Software Engineer, Web Developer, React Developer, TypeScript Developer, JavaScript Developer, Tailwind CSS, Node.js Developer, Cyber Security, Ethiopia Developer, Ethiopian Software Engineer, Addis Ababa Developer, AA Developer, Debre Birhan Developer, Debre Birhan Student, Debre Birhan University, Ethiopian Full-Stack Developer, Ethiopian Web Developer, African Developer, Portfolio, Hire Developer, Remote Developer Ethiopia, React TypeScript Portfolio, Next.js Developer, MERN Stack Developer" />
+        <title>Shanbel Kibre | Software Engineer & Full-Stack Developer</title>
+
+        <meta
+          name="description"
+          content="Shanbel Kibre is a Software Engineer and Full-Stack Developer from Debre Birhan, Ethiopia. Specialized in React, TypeScript, Tailwind CSS, Node.js, and Cybersecurity."
+        />
+
+        <meta
+          name="keywords"
+          content="Shanbel Kibre, Shambel Kibre, Software Engineer, Full-Stack Developer, Cybersecurity, Penetration Testing, React Developer, TypeScript, Node.js, Ethiopia Developer, Debre Birhan University, MERN Stack, Freelancer Ethiopia"
+        />
 
         <meta name="author" content="Shanbel Kibre" />
         <link rel="canonical" href="https://shanbelkibredev.vercel.app/" />
@@ -26,8 +33,14 @@ const Index = () => {
         {/* Open Graph (LinkedIn, WhatsApp, Facebook) */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://shanbelkibredev.vercel.app/" />
-        <meta property="og:title" content="Shanbel Kibre | Full-Stack Developer" />
-        <meta property="og:description" content="I'm Shanbel Kibre, a Full-Stack Developer specializing in React, TypeScript, and Tailwind CSS. Explore my projects and let's build something great together." />
+        <meta
+          property="og:title"
+          content="Shanbel Kibre | Software Engineer & Full-Stack Developer"
+        />
+        <meta
+          property="og:description"
+          content="Software Engineer & Full-Stack Developer specializing in React, TypeScript, Node.js, and Cybersecurity. Explore my work history and projects."
+        />
         <meta property="og:image" content="https://shanbelkibredev.vercel.app/preview.png" />
         <meta property="og:site_name" content="Shanbel Kibre Portfolio" />
         <meta property="og:locale" content="en_US" />
@@ -35,8 +48,14 @@ const Index = () => {
         {/* Twitter/X */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://shanbelkibredev.vercel.app/" />
-        <meta name="twitter:title" content="Shanbel Kibre | Full-Stack Developer" />
-        <meta name="twitter:description" content="I'm Shanbel Kibre, a Full-Stack Developer specializing in React, TypeScript, and Tailwind CSS. Explore my projects and let's build something great together." />
+        <meta
+          name="twitter:title"
+          content="Shanbel Kibre | Software Engineer & Full-Stack Developer"
+        />
+        <meta
+          name="twitter:description"
+          content="Software Engineer & Full-Stack Developer specializing in React, TypeScript, Node.js, and Cybersecurity."
+        />
         <meta name="twitter:image" content="https://shanbelkibredev.vercel.app/preview.png" />
 
         {/* Profile Links */}
@@ -51,32 +70,34 @@ const Index = () => {
             "name": "Shanbel Kibre",
             "url": "https://shanbelkibredev.vercel.app/",
             "image": "https://shanbelkibredev.vercel.app/preview.png",
-            "jobTitle": "Full-Stack Developer",
-           "description": "Ethiopian Full-Stack Developer from Debre Birhan, based in Addis Ababa. Specializing in React, TypeScript, Tailwind CSS, and Node.js.",
+            "jobTitle": "Software Engineer & Full-Stack Developer",
+            "description":
+              "Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing.",
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "Addis Ababa",
               "addressRegion": "Addis Ababa",
-              "addressCountry": "ET"
+              "addressCountry": "ET",
             },
             "sameAs": [
               "https://www.linkedin.com/in/shanbel-kibre/",
-              "https://github.com/shanbelkibre"
-            ]
+              "https://github.com/shanbelkibre",
+            ],
           })}
         </script>
       </Helmet>
 
-      <div>
+      <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
         <Navigation />
         <Hero />
         <About />
         <Skills />
+        <Experience />
         <Projects />
         <Contact />
 
-        <footer className="bg-secondary/30 py-8 text-center text-muted-foreground">
-          <p>© 2025 Shanbel Kibre. Built with passion and code.</p>
+        <footer className="bg-secondary/40 py-8 border-t border-border text-center text-sm text-muted-foreground">
+          <p>© 2026 Shanbel Kibre. All rights reserved. Built with React, TypeScript & Tailwind CSS.</p>
         </footer>
       </div>
     </>

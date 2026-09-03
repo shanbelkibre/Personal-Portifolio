@@ -1,49 +1,13 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github } from "lucide-react";
-import houseRental from "@/assets/houserntal.jpg";
-import ethioIntern from "@/assets/Ethiointern.jpg";
-import portfolio from "@/assets/portifolio.jpg";
-import studentReg from "@/assets/studentregisterion.jpg";
-import studentMgmt from "@/assets/studentmanagment.jpg";
+import { ExternalLink, Github, Eye, Edit, Plus } from "lucide-react";
+import { useCMS, Project } from "@/context/CMSContext";
+import ProjectDetailModal from "@/components/ProjectDetailModal";
+
 const Projects = () => {
-  const projects = [
-    {
-      title: "House Rental System - Debre Birhan",
-      description:
-        "A full-stack property rental platform connecting house owners and renters in Debre Birhan town. Features role-based dashboards (Admin/Owner/Renter), house listings with image uploads, rental request management, subscription payments, visit scheduling, offline agreements, and real-time notifications.",
-      tech: [
-        "Laravel",
-        "React",
-        "MySQL",
-        "Tailwind CSS",
-        "Sanctum",
-        "REST API",
-      ],
-      github: "https://github.com/shanbelkibre/house_rental_system",
-      demo: "https://house-rental-system-ten.vercel.app/",
-      image: houseRental,
-    },
-    {
-      title: "EthioInternship Platform - DBU Hackathon",
-      description:
-        "A hackathon-winning internship management platform connecting students, companies, and universities. Features user registration with role-based access (Student/Company/University), internship posting and application system, search and filter functionality, application status tracking, and local storage for data persistence. Built within 48 hours during DBU Hackathon to solve the internship gap in Ethiopian higher education.",
-      tech: ["HTML5", "CSS3", "JavaScript (ES6)", "LocalStorage API"],
-      github:
-        "https://github.com/shambelkibr/EthioInterShip_platform_DBU_Hackton",
-      demo: "https://ethio-inter-ship-platform.vercel.app/",
-      image: ethioIntern,
-    },
-    {
-      title: "React Portfolio",
-      description:
-        "A modern, responsive personal portfolio website showcasing my projects, skills, and experience. Features dark/light mode toggle, smooth animations with Framer Motion, project filtering by category, contact form with email integration, and fully responsive design for all devices.",
-      tech: ["React", "Vite", "JavaScript", "CSS", "Framer Motion", "EmailJS"],
-      github: "https://github.com/shambelkibr/my-Portfolio-by-React",
-      demo: "https://shanbelkibremyportfolio.vercel.app/",
-      image: portfolio,
-    }
-  ];
+  const { projects, isAdminLoggedIn, setIsCMSDrawerOpen } = useCMS();
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
     <section id="projects" className="py-20 bg-secondary/30">
@@ -107,23 +71,41 @@ const Projects = () => {
       `}</style>
 
       <div className="w-full max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          Featured <span className="text-gradient">Projects</span>
-        </h2>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+          <div className="text-center sm:text-left w-full">
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Featured <span className="text-gradient">Projects</span>
+            </h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              Click any project card to view full technical architecture and feature breakdown.
+            </p>
+          </div>
+
+          {isAdminLoggedIn && (
+            <Button
+              onClick={() => setIsCMSDrawerOpen(true)}
+              className="gap-2 shrink-0 shadow-md"
+            >
+              <Plus className="w-4 h-4" />
+              Add Project (CMS)
+            </Button>
+          )}
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <Card
-              key={project.title}
-              className="project-card card-animate flex flex-col border-border overflow-hidden p-0"
+              key={project.id || project.title}
+              className="project-card card-animate flex flex-col border-border overflow-hidden p-0 cursor-pointer group"
               style={{ animationDelay: `${index * 0.1}s` }}
+              onClick={() => setSelectedProject(project)}
             >
               {/* Image section */}
               <div
                 className="relative w-full flex-shrink-0 overflow-hidden"
-                style={{ height: "260px" }}
+                style={{ height: "240px" }}
               >
-                {/* Zoomable background */}
+                {/* Background Image */}
                 <div
                   className="image-zoom absolute inset-0"
                   style={{
@@ -136,14 +118,14 @@ const Projects = () => {
                 {/* Gradient overlay */}
                 <div className="project-image-overlay absolute inset-0" />
 
-                {/* Tech tags shown on hover */}
+                {/* Tech tags on hover */}
                 <div className="project-hover-info">
                   <div className="flex flex-wrap gap-1 justify-center">
                     {project.tech.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 rounded text-xs font-semibold text-white"
-                        style={{ background: "hsl(var(--primary) / 0.8)" }}
+                        className="px-2 py-0.5 rounded text-xs font-semibold text-white backdrop-blur-sm"
+                        style={{ background: "hsl(var(--primary) / 0.85)" }}
                       >
                         {tech}
                       </span>
@@ -151,12 +133,19 @@ const Projects = () => {
                   </div>
                 </div>
 
-                {/* Bold title — always fully visible */}
+                {/* Category tag */}
+                {project.category && (
+                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-background/80 text-primary border border-primary/30 backdrop-blur-md">
+                    {project.category}
+                  </span>
+                )}
+
+                {/* Card Title overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3
                     className="project-title-overlay text-white font-black leading-tight"
                     style={{
-                      fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+                      fontSize: "clamp(0.95rem, 2vw, 1.15rem)",
                       textShadow:
                         "0 2px 16px rgba(0,0,0,1), 0 1px 4px rgba(0,0,0,1)",
                     }}
@@ -168,29 +157,62 @@ const Projects = () => {
 
               {/* Card body */}
               <div className="p-6 flex flex-col flex-grow bg-card">
-                <p className="text-muted-foreground mb-6 flex-grow text-sm leading-relaxed">
+                <p className="text-muted-foreground mb-6 flex-grow text-sm leading-relaxed line-clamp-3">
                   {project.description}
                 </p>
 
                 <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {project.tech.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium"
+                        className="px-2.5 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex gap-3">
-                    {project.github ? (
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 gap-1.5 text-xs font-semibold"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProject(project);
+                      }}
+                    >
+                      <Eye className="w-3.5 h-3.5 text-primary" />
+                      View Details
+                    </Button>
+
+                    {project.demo && (
                       <Button
-                        asChild
                         size="sm"
+                        className="flex-1 gap-1.5 text-xs"
+                        onClick={(e) => e.stopPropagation()}
+                        asChild
+                      >
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Demo
+                        </a>
+                      </Button>
+                    )}
+
+                    {project.github && (
+                      <Button
+                        size="icon"
                         variant="secondary"
-                        className="flex-1 gap-2"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground shrink-0"
+                        onClick={(e) => e.stopPropagation()}
+                        asChild
+                        title="GitHub Code"
                       >
                         <a
                           href={project.github}
@@ -198,36 +220,7 @@ const Projects = () => {
                           rel="noopener noreferrer"
                         >
                           <Github className="w-4 h-4" />
-                          Code
                         </a>
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="flex-1 gap-2"
-                        disabled
-                      >
-                        <Github className="w-4 h-4" />
-                        Code
-                      </Button>
-                    )}
-
-                    {project.demo ? (
-                      <Button asChild size="sm" className="flex-1 gap-2">
-                        <a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Demo
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button size="sm" className="flex-1 gap-2" disabled>
-                        <ExternalLink className="w-4 h-4" />
-                        Demo
                       </Button>
                     )}
                   </div>
@@ -237,6 +230,13 @@ const Projects = () => {
           ))}
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 };
