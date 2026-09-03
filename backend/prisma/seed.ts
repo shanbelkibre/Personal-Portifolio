@@ -7,16 +7,16 @@ async function main() {
   console.log('Seeding database with Prisma...');
 
   // Upsert the Admin user
-  const passwordHash = await bcrypt.hash('admin123', 10);
+  const passwordHash = await bcrypt.hash('Sha2030P@#', 10);
   const admin = await prisma.user.upsert({
-    where: { username: 'admin' },
+    where: { username: 'shanboman' },
     update: {},
     create: {
-      username: 'admin',
+      username: 'shanboman',
       passwordHash: passwordHash,
     },
   });
-  console.log(`Admin user created: ${admin.username}`);
+
 
   // Upsert Site Config
   let siteConfig = await prisma.siteConfig.findFirst();
@@ -42,7 +42,7 @@ async function main() {
         }
       }
     });
-    console.log('Site Config and About Paragraphs created.');
+
   }
 
   // Create basic categories
@@ -59,8 +59,8 @@ async function main() {
   });
 
   // Create technologies
-  const reactTech = await prisma.technology.upsert({ where: { name: 'React' }, update: {}, create: { name: 'React' }});
-  const tailwindTech = await prisma.technology.upsert({ where: { name: 'Tailwind CSS' }, update: {}, create: { name: 'Tailwind CSS' }});
+  const reactTech = await prisma.technology.upsert({ where: { name: 'React' }, update: {}, create: { name: 'React' } });
+  const tailwindTech = await prisma.technology.upsert({ where: { name: 'Tailwind CSS' }, update: {}, create: { name: 'Tailwind CSS' } });
 
   // Create a sample project
   const project = await prisma.project.create({
@@ -84,7 +84,7 @@ async function main() {
     }
   });
 
-  console.log(`Created dummy project: ${project.title}`);
+
 }
 
 main()
