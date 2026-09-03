@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { pool } from '../config/db';
+import type { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_jwt_key_change_me_in_production';
 
 export const login = async (req: Request, res: Response) => {
@@ -18,16 +19,16 @@ export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
 
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    const user = result.rows[0];
-
     // Verify password
-    const validPassword = await bcrypt.compare(password, user.password_hash);
+    const validPassword = await bcrypt.compare(password, user.passwordHash);
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
@@ -52,8 +53,6 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const registerAdmin = async (req: Request, res: Response) => {
-  // Usually this endpoint is removed or protected in production.
-  // We'll leave it here for initial setup.
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -62,22 +61,28 @@ export const registerAdmin = async (req: Request, res: Response) => {
 
   try {
     // Check if any user already exists (only allow one admin for portfolio)
-    const countResult = await pool.query('SELECT COUNT(*) FROM users');
-    if (parseInt(countResult.rows[0].count) > 0) {
+    const count = await prisma.user.count();
+    if (count > 0) {
        return res.status(403).json({ error: 'Admin user already exists' });
     }
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    const result = await pool.query(
-      'INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING id, username',
-      [username, passwordHash]
-    );
+    const user = await prisma.user.create({
+      data: {
+        username,
+        passwordHash,
+      },
+      select: {
+        id: true,
+        username: true,
+      }
+    });
 
     res.status(201).json({
       message: 'Admin registered successfully',
-      user: result.rows[0],
+      user,
     });
   } catch (error) {
     console.error('Register error:', error);

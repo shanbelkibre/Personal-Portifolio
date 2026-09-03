@@ -1,11 +1,18 @@
-import { Request, Response } from 'express';
-import { pool } from '../config/db';
+import type { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const getPortfolio = async (req: Request, res: Response) => {
   try {
     // 1. Fetch site_config and about paragraphs
-    const configResult = await pool.query('SELECT * FROM site_config LIMIT 1');
-    const siteConfig = configResult.rows[0];
+    const siteConfig = await prisma.siteConfig.findFirst({
+      include: {
+        paragraphs: {
+          orderBy: { orderIndex: 'asc' }
+        }
+      }
+    });
 
     let aboutData = { paragraphs: [] as string[] };
     let hero = null;
@@ -13,42 +20,85 @@ export const getPortfolio = async (req: Request, res: Response) => {
     let theme = null;
 
     if (siteConfig) {
-      const paragraphsResult = await pool.query('SELECT content FROM about_paragraphs WHERE config_id = $1 ORDER BY order_index ASC', [siteConfig.id]);
-      aboutData.paragraphs = paragraphsResult.rows.map((row: any) => row.content);
+      aboutData.paragraphs = siteConfig.paragraphs.map(p => p.content);
 
       hero = {
-        name: siteConfig.hero_name,
-        badgeText: siteConfig.hero_badge,
-        subtitle: siteConfig.hero_subtitle,
-        bio: siteConfig.hero_bio,
-        githubUrl: siteConfig.hero_github,
-        linkedinUrl: siteConfig.hero_linkedin,
-        profileImage: siteConfig.hero_image,
+        name: siteConfig.heroName,
+        badgeText: siteConfig.heroBadge,
+        subtitle: siteConfig.heroSubtitle,
+        bio: siteConfig.heroBio,
+        githubUrl: siteConfig.heroGithub,
+        linkedinUrl: siteConfig.heroLinkedin,
       };
 
       contact = {
-        email: siteConfig.contact_email,
-        phone: siteConfig.contact_phone,
-        location: siteConfig.contact_location,
+        email: siteConfig.contactEmail,
+        phone: siteConfig.contactPhone,
+        location: siteConfig.contactLocation,
       };
 
       theme = {
-        colorTheme: siteConfig.theme_color,
+        colorTheme: siteConfig.themeColor,
       };
     }
 
-    // 2. Fetch Projects (simplified for now without full mapping to technologies due to 3NF complexity)
-    // To do it properly we would JOIN project_features, project_technologies, etc.
-    const projectsResult = await pool.query('SELECT p.*, c.name as category_name FROM projects p LEFT JOIN categories c ON p.category_id = c.id');
-    const projects = projectsResult.rows;
+    // 2. Fetch Projects
+    const projects = await prisma.project.findMany({
+      include: {
+        category: true,
+        features: {
+          orderBy: { orderIndex: 'asc' }
+        },
+        technologies: {
+          include: {
+            technology: true
+          }
+        }
+      }
+    });
 
     // 3. Fetch Experiences
-    const expResult = await pool.query('SELECT e.*, c.name as company_name FROM experiences e LEFT JOIN companies c ON e.company_id = c.id');
-    const experiences = expResult.rows;
+    const experiences = await prisma.experience.findMany({
+      include: {
+        company: true,
+        achievements: {
+          orderBy: { orderIndex: 'asc' }
+        },
+        skills: {
+          include: {
+            technology: true
+          }
+        }
+      }
+    });
 
     // 4. Fetch Certifications
-    const certResult = await pool.query('SELECT * FROM certifications');
-    const certifications = certResult.rows;
+    const certifications = await prisma.certification.findMany();
+
+    // Mapping prisma objects to the flat structure expected by the frontend
+    const mappedProjects = projects.map(p => ({
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      longDescription: p.longDescription,
+      github: p.githubUrl,
+      demo: p.demoUrl,
+      image: p.imageUrl,
+      category: p.category?.name,
+      featured: p.featured,
+      features: p.features.map(f => f.description),
+      tech: p.technologies.map(t => t.technology.name)
+    }));
+
+    const mappedExperiences = experiences.map(e => ({
+      id: e.id,
+      role: e.role,
+      company: e.company?.name,
+      period: `${e.periodStart} - ${e.periodEnd}`,
+      description: e.description,
+      achievements: e.achievements.map(a => a.description),
+      skills: e.skills.map(s => s.technology.name)
+    }));
 
     // We send back a nested JSON structure similar to what the frontend expects
     res.json({
@@ -56,8 +106,8 @@ export const getPortfolio = async (req: Request, res: Response) => {
       about: aboutData,
       contact,
       theme,
-      projects,
-      experiences,
+      projects: mappedProjects,
+      experiences: mappedExperiences,
       certifications
     });
 
