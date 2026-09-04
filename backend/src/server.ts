@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import portfolioRoutes from './routes/portfolioRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic health check route
 app.get('/health', (req, res) => {
