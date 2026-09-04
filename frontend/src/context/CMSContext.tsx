@@ -195,20 +195,25 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (!response.ok) throw new Error("Failed to fetch portfolio data");
       const data = await response.json();
 
-      if (data.projects) {
+      // Only replace the built-in defaults when the API actually returns content.
+      // An empty DB table must NOT wipe out the fallback content already on screen.
+      const hasItems = (arr: unknown): arr is unknown[] => Array.isArray(arr) && arr.length > 0;
+
+      if (hasItems(data.projects)) {
         const assetMap = [houseRental, ethioIntern, portfolio];
         const mapped = data.projects.map((p: Record<string, unknown>, i: number) => ({
           ...p,
-          image: assetMap[i] ?? p.imageUrl,
+          image: (p.image as string | null) || assetMap[i] || undefined,
           tech: Array.isArray(p.tech) ? p.tech : [],
+          features: Array.isArray(p.features) ? p.features : [],
         }));
         setProjects(mapped);
       }
-      if (data.experiences) setExperiences(data.experiences);
-      if (data.certifications) setCertifications(data.certifications);
-      if (data.hero) setHero((prev) => ({ ...prev, ...Object.fromEntries(Object.entries(data.hero).filter(([, v]) => v != null)) }));
-      if (data.about) setAbout(data.about);
-      if (data.contact) setContact((prev) => ({ ...prev, ...Object.fromEntries(Object.entries(data.contact).filter(([, v]) => v != null)) }));
+      if (hasItems(data.experiences)) setExperiences(data.experiences);
+      if (hasItems(data.certifications)) setCertifications(data.certifications);
+      if (data.hero) setHero((prev) => ({ ...prev, ...Object.fromEntries(Object.entries(data.hero).filter(([, v]) => v != null && v !== "")) }));
+      if (hasItems(data.about?.paragraphs)) setAbout({ paragraphs: data.about.paragraphs });
+      if (data.contact) setContact((prev) => ({ ...prev, ...Object.fromEntries(Object.entries(data.contact).filter(([, v]) => v != null && v !== "")) }));
       if (data.theme?.colorTheme) setThemeState({ colorTheme: data.theme.colorTheme });
     } catch {
       // Keep fallback data silently

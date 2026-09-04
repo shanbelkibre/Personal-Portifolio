@@ -55,9 +55,10 @@ async function main() {
     techs[name] = await prisma.technology.upsert({ where: { name }, update: {}, create: { name } });
   }
 
-  // Clear existing projects/experiences for clean seed (Optional, but good for resetting to static defaults)
+  // Clear existing projects/experiences/certifications for clean seed (Optional, but good for resetting to static defaults)
   await prisma.project.deleteMany({});
   await prisma.experience.deleteMany({});
+  await prisma.certification.deleteMany({});
 
   // ------------------------------------
   // PROJECTS
@@ -257,6 +258,17 @@ async function main() {
         ]
       }
     }
+  });
+
+  // ------------------------------------
+  // CERTIFICATIONS
+  // ------------------------------------
+  await prisma.certification.createMany({
+    data: [
+      { title: 'Cyber Security Student – GTST, Round 14', issuer: 'Global Talent Security Training (GTST)', year: '2025' },
+      { title: 'INSA Talent Summer Camp Student – 5th Round, 2018 E.C.', issuer: 'Information Network Security Administration (INSA)', year: '2025 - 2026' },
+      { title: 'DBU Hackathon, 2017 E.C. – 3rd Place, Innovation and Creativity', issuer: 'Debre Birhan University', year: '2024 - 2025' },
+    ],
   });
 
   console.log('Seeding completed successfully!');
