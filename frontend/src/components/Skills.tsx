@@ -1,18 +1,10 @@
-import { Card } from "@/components/ui/card";
-import {
-  Code2,
-  Server,
-  Database,
-  GitBranch,
-  ClipboardList,
-  Layers,
-} from "lucide-react";
-
 import {
   SiHtml5,
   SiCss,
   SiJavascript,
+  SiTypescript,
   SiReact,
+  SiNextdotjs,
   SiTailwindcss,
   SiNodedotjs,
   SiExpress,
@@ -21,173 +13,91 @@ import {
   SiMongodb,
   SiGit,
   SiGithub,
-  SiJira,
-  SiCplusplus, // ADD THIS
-  // ADD THIS
-  SiPython, // ADD THIS
-  SiPhp, // ADD THIS
+  SiCplusplus,
+  SiPython,
+  SiPhp,
+  SiFigma
 } from "react-icons/si";
 import { IconType } from "react-icons";
-import { type ComponentType, type SVGProps } from "react";
 
 interface Skill {
-  label: string;
+  name: string;
   icon: IconType;
   color: string;
+  proficiency: string;
 }
 
-interface SkillCategory {
-  title: string;
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  skills: Skill[];
-}
-
-const skillCategories: SkillCategory[] = [
-  {
-    title: "Frontend",
-    icon: Code2,
-    skills: [
-      { label: "HTML5", icon: SiHtml5, color: "#e34f26" },
-      { label: "CSS3", icon: SiCss, color: "#264de4" },
-      { label: "JavaScript", icon: SiJavascript, color: "#f7df1e" },
-      { label: "React", icon: SiReact, color: "#61dafb" },
-      { label: "Tailwind CSS", icon: SiTailwindcss, color: "#06b6d4" },
-    ],
-  },
-  {
-    title: "Backend",
-    icon: Server,
-    skills: [
-      { label: "Node.js", icon: SiNodedotjs, color: "#8cc84b" },
-      { label: "Express.js", icon: SiExpress, color: "#ffffff" },
-    ],
-  },
-  {
-    title: "Programming Languages",
-    icon: Code2,
-    skills: [
-      { label: "C++", icon: SiCplusplus, color: "#00599c" },
-
-      { label: "Python", icon: SiPython, color: "#3776ab" },
-      { label: "PHP", icon: SiPhp, color: "#777bb4" },
-      { label: "DSA", icon: SiJavascript, color: "#f7df1e" },
-    ],
-  },
-
-  {
-    title: "Database",
-    icon: Database,
-    skills: [
-      { label: "MySQL", icon: SiMysql, color: "#00618a" },
-      { label: "PostgreSQL", icon: SiPostgresql, color: "#336791" },
-      { label: "MongoDB", icon: SiMongodb, color: "#47a248" },
-    ],
-  },
-  {
-    title: "Version Control",
-    icon: GitBranch,
-    skills: [
-      { label: "Git", icon: SiGit, color: "#f05032" },
-      { label: "GitHub", icon: SiGithub, color: "#ffffff" },
-    ],
-  },
-  {
-    title: "Project Management",
-    icon: ClipboardList,
-    skills: [
-      { label: "Jira", icon: SiJira, color: "#0052cc" },
-      { label: "Kanban", icon: SiJira, color: "#0052cc" },
-      { label: "Scrum", icon: SiJira, color: "#6554c0" },
-    ],
-  },
-  {
-    title: "Design Tools",
-    icon: Layers,
-    skills: [
-      { label: "Enterprise Arch.", icon: SiJira, color: "#f0a500" },
-      { label: "StarUML", icon: SiJira, color: "#9c27b0" },
-      { label: "Visual Paradigm", icon: SiJira, color: "#1565c0" },
-    ],
-  },
+const skills: Skill[] = [
+  { name: "React", icon: SiReact, color: "#61dafb", proficiency: "Expert" },
+  { name: "Next.js", icon: SiNextdotjs, color: "#000000", proficiency: "Advanced" },
+  { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06b6d4", proficiency: "Advanced" },
+  { name: "HTML5", icon: SiHtml5, color: "#e34f26", proficiency: "Expert" },
+  { name: "CSS3", icon: SiCss, color: "#1572b6", proficiency: "Expert" },
+  { name: "JavaScript/ES6+", icon: SiJavascript, color: "#f7df1e", proficiency: "Expert" },
+  { name: "TypeScript", icon: SiTypescript, color: "#3178c6", proficiency: "Advanced" },
+  { name: "Node.js", icon: SiNodedotjs, color: "#339933", proficiency: "Advanced" },
+  { name: "Express.js", icon: SiExpress, color: "#000000", proficiency: "Advanced" },
+  { name: "MySQL", icon: SiMysql, color: "#4479a1", proficiency: "Advanced" },
+  { name: "PostgreSQL", icon: SiPostgresql, color: "#336791", proficiency: "Intermediate" },
+  { name: "MongoDB", icon: SiMongodb, color: "#47a248", proficiency: "Intermediate" },
+  { name: "Git", icon: SiGit, color: "#f05032", proficiency: "Expert" },
+  { name: "GitHub", icon: SiGithub, color: "#181717", proficiency: "Expert" },
+  { name: "Python", icon: SiPython, color: "#3776ab", proficiency: "Intermediate" },
+  { name: "PHP", icon: SiPhp, color: "#777bb4", proficiency: "Intermediate" },
+  { name: "C++", icon: SiCplusplus, color: "#00599c", proficiency: "Intermediate" },
+  { name: "Figma", icon: SiFigma, color: "#f24e1e", proficiency: "Intermediate" },
 ];
 
 const Skills = () => {
   return (
-    <section id="skills" className="py-20">
+    <section id="skills" className="py-24 bg-secondary/20">
       <style>{`
-        @keyframes skill-pop {
-          from { opacity: 0; transform: scale(0.82) translateY(8px); }
-          to   { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes pop-in {
+          0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-        .skill-chip {
-          animation: skill-pop 0.5s ease-out both;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .skill-card {
+          animation: pop-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .skill-chip:hover {
-          transform: scale(1.1) translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        .skill-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
         }
-        @media (prefers-reduced-motion: reduce) {
-          .skill-chip { animation: none !important; }
+        /* Fix icon colors in dark mode for black icons */
+        .dark .icon-black {
+          color: #ffffff !important;
         }
       `}</style>
 
-      <div className="container max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          Technical <span className="text-gradient">Skills</span>
+      <div className="container max-w-6xl mx-auto px-6">
+        <h2 className="text-3xl md:text-5xl font-extrabold mb-16 text-center tracking-tight">
+          <span className="text-primary uppercase">TECHNICAL TOOLKIT</span>
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {skillCategories.map((category, catIndex) => {
-            const CategoryIcon = category.icon;
-            const skillOffset = skillCategories
-              .slice(0, catIndex)
-              .reduce((acc, c) => acc + c.skills.length, 0);
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {skills.map((skill, index) => {
+            const Icon = skill.icon;
+            // Next.js, Express, GitHub are black by default. Invert them in dark mode.
+            const isBlackIcon = ["#000000", "#181717"].includes(skill.color);
 
             return (
-              <Card
-                key={category.title}
-                className="p-8 bg-card border-border card-glow hover:shadow-xl transition-shadow duration-300"
-                style={{ animationDelay: `${catIndex * 0.1}s` }}
+              <div
+                key={skill.name}
+                className="skill-card flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl bg-card border border-border/50 shadow-sm"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className="flex flex-col items-center text-center space-y-6">
-                  <div className="p-4 rounded-full bg-primary/10 shadow-sm">
-                    <CategoryIcon className="w-8 h-8 text-primary" />
-                  </div>
-
-                  <h3 className="text-2xl font-bold">{category.title}</h3>
-
-                  <div className="flex flex-wrap gap-3 justify-center">
-                    {category.skills.map((skill, skillIndex) => {
-                      const Icon = skill.icon;
-                      return (
-                        <div
-                          key={skill.label}
-                          role="img"
-                          aria-label={skill.label}
-                          tabIndex={0}
-                          className="skill-chip flex items-center gap-2 bg-secondary/80 rounded-lg px-3 py-2 shadow-md cursor-default focus:outline-none focus:ring-2 focus:ring-primary/50"
-                          style={{
-                            animationDelay: `${(skillOffset + skillIndex) * 0.07}s`,
-                          }}
-                        >
-                          <Icon
-                            style={{
-                              color: skill.color,
-                              width: "1.2rem",
-                              height: "1.2rem",
-                              flexShrink: 0,
-                            }}
-                          />
-                          <span className="text-sm font-medium text-foreground/80 whitespace-nowrap">
-                            {skill.label}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </Card>
+                <Icon
+                  className={`w-12 h-12 md:w-14 md:h-14 mb-4 ${isBlackIcon ? 'icon-black' : ''}`}
+                  style={{ color: skill.color }}
+                />
+                <h3 className="text-sm md:text-base font-bold text-foreground text-center mb-1">
+                  {skill.name}
+                </h3>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">
+                  {skill.proficiency}
+                </p>
+              </div>
             );
           })}
         </div>
@@ -197,3 +107,4 @@ const Skills = () => {
 };
 
 export default Skills;
+

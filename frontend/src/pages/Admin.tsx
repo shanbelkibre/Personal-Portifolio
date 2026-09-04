@@ -1,129 +1,128 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Lock, ShieldCheck, KeyRound, AlertCircle, Loader2, User } from 'lucide-react';
-import { useCMS } from '@/context/CMSContext';
+﻿import React, { useState, useEffect } from "react";
+import { useCMS } from "@/context/CMSContext";
+import AdminDashboard from "./AdminDashboard";
+import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-const Admin = () => {
-  const navigate = useNavigate();
-  const { login } = useCMS();
-  
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
+const Admin: React.FC = () => {
+  const { isAdminLoggedIn, login } = useCMS();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // If already logged in, show dashboard directly
+  if (isAdminLoggedIn) {
+    return <AdminDashboard />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    // Basic Input Validation for SQL/XSS
-    const sqlXssRegex = /(<script>|SELECT|INSERT|UPDATE|DELETE|DROP|--|;)/i;
-    if (sqlXssRegex.test(username) || sqlXssRegex.test(password)) {
-      setError('Invalid characters detected.');
+    setError("");
+    if (!username.trim() || !password.trim()) {
+      setError("Please enter your username and password.");
       return;
     }
-
-    setIsVerifying(true);
-
+    setLoading(true);
     try {
-      // Temporarily use the old login logic for fallback if backend isn't ready,
-      // but ideally this should call a backend endpoint.
-      const success = await login(password); // Will update CMSContext later to pass username as well
-      if (success) {
-        navigate('/');
-      } else {
-        setError('Invalid credentials.');
+      const success = await login(username, password);
+      if (!success) {
+        setError("Invalid username or password. Please try again.");
       }
-    } catch (err) {
-      setError('Authentication error occurred.');
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
     } finally {
-      setIsVerifying(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 bg-card border-border shadow-2xl backdrop-blur-xl space-y-6">
-        <div className="text-center flex flex-col items-center">
-          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3 shadow-inner">
-            <Lock className="w-7 h-7" />
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight">Admin Authentication</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Secure backend login for Portfolio CMS.
-          </p>
-        </div>
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      {/* Background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="relative w-full max-w-sm">
+        {/* Card */}
+        <div className="bg-card border border-border rounded-2xl shadow-2xl p-8">
+          {/* Icon + Title */}
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 shadow-lg">
+              <Shield className="w-7 h-7 text-primary" />
+            </div>
+            <h1 className="text-2xl font-bold text-foreground">Admin Access</h1>
+            <p className="text-sm text-muted-foreground mt-1 text-center">Portfolio Content Management System</p>
+          </div>
+
+          {/* Error */}
           {error && (
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm font-medium">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{error}</span>
+            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm text-center">
+              {error}
             </div>
           )}
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Username
-            </label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label htmlFor="admin-username" className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Username
+              </label>
               <Input
+                id="admin-username"
                 type="text"
-                placeholder="Enter admin username..."
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="pl-9 bg-secondary/50 border-border focus-visible:ring-primary"
-                autoFocus
-                required
+                placeholder="admin"
+                disabled={loading}
+                autoComplete="username"
+                className="bg-background"
               />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Password
-            </label>
-            <div className="relative">
-              <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="password"
-                placeholder="Enter password..."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-9 bg-secondary/50 border-border focus-visible:ring-primary"
-                required
-              />
+            <div className="space-y-1.5">
+              <label htmlFor="admin-password" className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Password
+              </label>
+              <div className="relative">
+                <Input
+                  id="admin-password"
+                  type={showPass ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  disabled={loading}
+                  autoComplete="current-password"
+                  className="bg-background pr-10"
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowPass(!showPass)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="flex justify-end gap-3 pt-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate('/')}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isVerifying} className="gap-2 shadow-md hover:shadow-lg">
-              {isVerifying ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Verifying...
-                </>
+            <Button type="submit" disabled={loading} className="w-full gap-2 mt-2 shadow-md">
+              {loading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" />Signing in...</>
               ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4" />
-                  Login to Backend
-                </>
+                "Sign In"
               )}
             </Button>
-          </div>
-        </form>
-      </Card>
+          </form>
+
+          {/* Footer hint */}
+          <p className="text-center text-[11px] text-muted-foreground mt-6">
+            Protected by JWT · bcrypt encrypted passwords
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

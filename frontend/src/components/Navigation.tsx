@@ -81,15 +81,6 @@ const Navigation = () => {
 
           {/* Mobile Menu Button & Controls */}
           <div className="md:hidden flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => (isAdminLoggedIn ? setIsCMSDrawerOpen(true) : setIsAdminLoginOpen(true))}
-              className="text-muted-foreground hover:text-primary"
-              title="Admin CMS"
-            >
-              <Shield className={`h-4 w-4 ${isAdminLoggedIn ? "text-primary" : ""}`} />
-            </Button>
 
             <Button
               variant="ghost"

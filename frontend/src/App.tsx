@@ -1,10 +1,9 @@
-import { Toaster } from "@/components/ui/toaster";
+﻿import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CMSProvider } from "@/context/CMSContext";
-import AdminCMSDrawer from "@/components/admin/AdminCMSDrawer";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import Admin from "./pages/Admin";
 import Index from "./pages/Index";
@@ -18,7 +17,6 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AdminCMSDrawer />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <KeyboardShortcuts />
           <Routes>
