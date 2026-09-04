@@ -47,8 +47,15 @@ const Contact = () => {
           subject: formData.subject || "Portfolio Contact Request",
           message: formData.message,
           to_email: contact?.email || "",
+
+          // These variables are specifically to match your current EmailJS template!
+          email: contact?.email || "shambel5110@gmail.com",
+          shanbelkibre: formData.name,
+          title: formData.subject || "Portfolio Contact Request",
         },
-        emailConfig.publicKey !== "user_public_key_placeholder" ? emailConfig.publicKey : undefined
+        {
+          publicKey: emailConfig.publicKey !== "user_public_key_placeholder" ? emailConfig.publicKey : undefined
+        }
       );
 
       toast.success("Thank you! Your message has been sent successfully.");
@@ -57,22 +64,15 @@ const Contact = () => {
         text: "Your message was sent successfully! I will reply to your email shortly.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (err: any) {
-      console.warn("EmailJS direct send note:", err);
-      // Friendly fallback notification and mailto launch
-      toast.success("Opening your mail app to send email directly...");
-      window.open(
-        `mailto:${contact?.email || ""}...?subject=${encodeURIComponent(
-          formData.subject || "Freelance Request from " + formData.name
-        )}&body=${encodeURIComponent(
-          `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-        )}`
-      );
+    } catch (err: unknown) {
+      // Show the exact error so we can debug why EmailJS is failing
+      const error = err as { text?: string; message?: string };
+      const errorMessage = error?.text || error?.message || "Unknown error occurred";
+      toast.error(`EmailJS Failed: ${errorMessage}`);
       setStatusMessage({
-        type: "success",
-        text: "Mail client opened! You can complete sending directly.",
+        type: "error",
+        text: `EmailJS Error: ${errorMessage}. Please check your keys or template!`,
       });
-      setFormData({ name: "", email: "", subject: "", message: "" });
     } finally {
       setIsSending(false);
     }
@@ -102,7 +102,7 @@ const Contact = () => {
                 <div>
                   <h3 className="font-bold text-foreground text-base">Direct Email</h3>
                   <a
-                    href={`mailto:${contact?.email || ""}`}
+                    href="#email"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors break-all font-medium"
                   >
                     {contact?.email || "Loading..."}
@@ -138,7 +138,7 @@ const Contact = () => {
           </div>
 
           {/* EmailJS Contact Form (7 cols) */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7" id="email">
             <Card className="p-6 sm:p-8 bg-card border-border shadow-lg card-glow">
               <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
                 <Send className="w-5 h-5 text-primary" />
@@ -150,11 +150,10 @@ const Contact = () => {
 
               {statusMessage && (
                 <div
-                  className={`p-4 rounded-xl mb-6 flex items-start gap-3 text-xs md:text-sm font-medium ${
-                    statusMessage.type === "success"
+                  className={`p-4 rounded-xl mb-6 flex items-start gap-3 text-xs md:text-sm font-medium ${statusMessage.type === "success"
                       ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
                       : "bg-destructive/10 border border-destructive/30 text-destructive"
-                  }`}
+                    }`}
                 >
                   {statusMessage.type === "success" ? (
                     <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />

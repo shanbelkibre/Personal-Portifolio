@@ -2,6 +2,7 @@ import { Github, Linkedin, Sparkles, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 import profileImg from "@/assets/profile.jpg";
+import profilePdf from "@/assets/profile.pdf";
 import { useCMS } from "@/context/CMSContext";
 
 const Hero = () => {
@@ -98,7 +99,7 @@ const Hero = () => {
               style={{ animation: "hero-fade-in 0.6s ease-out 0.1s both" }}
             >
               Hi, I'm{" "}
-              <span className="text-gradient typing-name">{hero.name}</span>
+              <span className="text-gradient">{hero.name}</span>
             </h1>
 
             <p
@@ -137,14 +138,16 @@ const Hero = () => {
               </Button>
 
               <Button
+                asChild
                 size="lg"
                 variant="outline"
-                onClick={() => window.print()}
                 className="gap-2 border-primary/40 hover:bg-primary/10 shadow-sm"
-                title="Download / Print Resume"
+                title="View / Download Resume"
               >
-                <Download className="w-4 h-4 text-primary" />
-                Resume / CV
+                <a href={profilePdf} target="_blank" rel="noopener noreferrer">
+                  <Download className="w-4 h-4 text-primary" />
+                  View Resume
+                </a>
               </Button>
 
               {isAdminLoggedIn && (
@@ -210,36 +213,8 @@ const Hero = () => {
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes typing {
-          from { width: 0; }
-          to   { width: 7.8em; }
-        }
-
-        @keyframes blink {
-          0%, 100% { border-color: hsl(var(--primary)); }
-          50%       { border-color: transparent; }
-        }
-
-        .typing-name {
-          display: inline-block;
-          overflow: hidden;
-          white-space: nowrap;
-          border-right: 3px solid hsl(var(--primary));
-          width: 0;
-          line-height: 1.1;
-          vertical-align: middle;
-          animation:
-            typing 3s steps(13, end) infinite alternate,
-            blink 0.7s step-end infinite;
-        }
-
         @media (prefers-reduced-motion: reduce) {
           [style*="animation"] { animation: none !important; }
-          .typing-name {
-            width: 7.8em;
-            border-right: none;
-            animation: none !important;
-          }
         }
       `}</style>
     </section>
