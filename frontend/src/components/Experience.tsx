@@ -7,7 +7,7 @@ export const Experience: React.FC = () => {
   const { experiences, certifications } = useCMS();
 
   return (
-    <section id="experience" className="py-20 bg-background relative">
+    <section id="experience" className="py-20 relative">
       <div className="container max-w-6xl mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">

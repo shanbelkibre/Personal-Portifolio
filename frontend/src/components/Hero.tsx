@@ -1,12 +1,12 @@
-import { Github, Linkedin, Sparkles, Download } from "lucide-react";
+import { Github, Linkedin, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBg from "@/assets/hero-bg.jpg";
 import profileImg from "@/assets/profile.jpg";
+
 import profilePdf from "@/assets/profile.pdf";
 import { useCMS } from "@/context/CMSContext";
 
 const Hero = () => {
-  const { hero, isAdminLoggedIn, setIsCMSDrawerOpen } = useCMS();
+  const { hero, isAdminLoggedIn } = useCMS();
 
   return (
     <section
@@ -15,14 +15,9 @@ const Hero = () => {
       style={{
         minHeight: "100vh",
         paddingTop: "56px",
-
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `linear-gradient(to bottom, hsl(var(--background) / 0.88), hsl(var(--background) / 0.97)), url(${heroBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
       }}
     >
       {/* Decorative gradient blobs */}

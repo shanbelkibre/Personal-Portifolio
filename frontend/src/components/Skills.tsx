@@ -50,7 +50,7 @@ const skills: Skill[] = [
 
 const Skills = () => {
   return (
-    <section id="skills" className="py-24 bg-secondary/20">
+    <section id="skills" className="py-24">
       <style>{`
         @keyframes pop-in {
           0% { opacity: 0; transform: scale(0.9) translateY(10px); }

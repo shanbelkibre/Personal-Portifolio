@@ -10,7 +10,7 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="py-20 bg-secondary/30">
+    <section id="projects" className="py-20">
       <style>{`
         .project-card {
           transition: transform 0.4s ease, box-shadow 0.4s ease;

@@ -6,6 +6,7 @@ import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const Index = () => {
   return (
@@ -87,7 +88,16 @@ const Index = () => {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
+      <div
+        className="min-h-screen text-foreground selection:bg-primary/20 selection:text-primary"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, hsl(var(--background) / 0.92), hsl(var(--background) / 0.96)), url(${heroBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <Navigation />
         <Hero />
         <About />
@@ -96,7 +106,7 @@ const Index = () => {
         <Projects />
         <Contact />
 
-        <footer className="bg-secondary/40 py-8 border-t border-border text-center text-sm text-muted-foreground">
+        <footer className="py-8 border-t border-border/40 text-center text-sm text-muted-foreground">
           <p>© 2026 Shanbel Kibre. All rights reserved. Built with React, TypeScript & Tailwind CSS.</p>
         </footer>
       </div>
