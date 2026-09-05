@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCMS } from "@/context/CMSContext";
 import AdminDashboard from "./AdminDashboard";
 import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
@@ -7,11 +8,21 @@ import { Input } from "@/components/ui/input";
 
 const Admin: React.FC = () => {
   const { isAdminLoggedIn, login } = useCMS();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // After logging out from the dashboard, return to the home page
+  const wasLoggedIn = React.useRef(isAdminLoggedIn);
+  useEffect(() => {
+    if (wasLoggedIn.current && !isAdminLoggedIn) {
+      navigate("/", { replace: true });
+    }
+    wasLoggedIn.current = isAdminLoggedIn;
+  }, [isAdminLoggedIn, navigate]);
 
   // If already logged in, show dashboard directly
   if (isAdminLoggedIn) {
