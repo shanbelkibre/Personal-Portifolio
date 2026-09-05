@@ -1,11 +1,14 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { experiencesApi, technologiesApi, type AdminExperience, type AdminTechnology } from "@/services/adminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2, Calendar, Building2 } from "lucide-react";
 import ExperienceForm from "../forms/ExperienceForm";
 
+import { useCMS } from "@/context/CMSContext";
+
 const ExperienceSection: React.FC = () => {
+  const { refreshData } = useCMS();
   const [experiences, setExperiences] = useState<AdminExperience[]>([]);
   const [technologies, setTechnologies] = useState<AdminTechnology[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,14 +34,16 @@ const ExperienceSection: React.FC = () => {
     try {
       await experiencesApi.delete(id);
       setExperiences((prev) => prev.filter((e) => e.id !== id));
+      await refreshData();
     } catch { alert("Failed to delete"); }
     finally { setDeleting(null); }
   };
 
-  const handleSave = (exp: AdminExperience) => {
+  const handleSave = async (exp: AdminExperience) => {
     if (editItem) setExperiences((prev) => prev.map((e) => (e.id === exp.id ? exp : e)));
     else setExperiences((prev) => [exp, ...prev]);
     setFormOpen(false); setEditItem(null);
+    await refreshData();
   };
 
   return (

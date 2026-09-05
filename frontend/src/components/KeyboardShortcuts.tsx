@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCMS } from "@/context/CMSContext";
 
 const KeyboardShortcuts: React.FC = () => {
-  const { isAdminLoggedIn } = useCMS();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +13,7 @@ const KeyboardShortcuts: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [navigate, isAdminLoggedIn]);
+  }, [navigate]);
 
   return null;
 };

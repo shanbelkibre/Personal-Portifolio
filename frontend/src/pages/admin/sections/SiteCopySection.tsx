@@ -1,11 +1,14 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { siteConfigApi, type SiteConfigData } from "@/services/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Save, Plus, Trash2, Loader2 } from "lucide-react";
 
+import { useCMS } from "@/context/CMSContext";
+
 const SiteCopySection: React.FC = () => {
+  const { refreshData } = useCMS();
   const [config, setConfig] = useState<SiteConfigData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,6 +54,7 @@ const SiteCopySection: React.FC = () => {
         about: { paragraphs: paragraphs.filter((p) => p.trim() !== "") },
       });
       setSaved(true);
+      await refreshData();
       setTimeout(() => setSaved(false), 3000);
     } catch { alert("Failed to save"); }
     finally { setSaving(false); }

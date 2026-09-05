@@ -1,10 +1,13 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { certificationsApi, type AdminCertification } from "@/services/adminApi";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Award } from "lucide-react";
 import CertificationForm from "../forms/CertificationForm";
 
+import { useCMS } from "@/context/CMSContext";
+
 const CertificationsSection: React.FC = () => {
+  const { refreshData } = useCMS();
   const [certs, setCerts] = useState<AdminCertification[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -25,15 +28,19 @@ const CertificationsSection: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this certification?")) return;
     setDeleting(id);
-    try { await certificationsApi.delete(id); setCerts((prev) => prev.filter((c) => c.id !== id)); }
-    catch { alert("Failed to delete"); }
+    try {
+      await certificationsApi.delete(id);
+      setCerts((prev) => prev.filter((c) => c.id !== id));
+      await refreshData();
+    } catch { alert("Failed to delete"); }
     finally { setDeleting(null); }
   };
 
-  const handleSave = (cert: AdminCertification) => {
+  const handleSave = async (cert: AdminCertification) => {
     if (editItem) setCerts((prev) => prev.map((c) => (c.id === cert.id ? cert : c)));
     else setCerts((prev) => [cert, ...prev]);
     setFormOpen(false); setEditItem(null);
+    await refreshData();
   };
 
   return (
