@@ -91,7 +91,7 @@ const Index = () => {
       <div
         className="min-h-screen text-foreground selection:bg-primary/20 selection:text-primary"
         style={{
-          backgroundImage: `linear-gradient(to bottom, hsl(var(--background) / 0.92), hsl(var(--background) / 0.96)), url(${heroBg})`,
+          backgroundImage: `linear-gradient(to bottom, hsl(var(--background) / 0.72), hsl(var(--background) / 0.78)), url(${heroBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",

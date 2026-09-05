@@ -14,7 +14,7 @@ export const Experience: React.FC = () => {
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
             <span className="text-primary uppercase">WORK HISTORY & </span><span className="text-gradient uppercase">EXPERIENCE</span>
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto">
+          <p className="text-foreground/80 text-sm md:text-base max-w-2xl mx-auto">
             Practical full-stack development, software engineering, and cybersecurity experience (2024 – 2026).
           </p>
         </div>
@@ -54,7 +54,7 @@ export const Experience: React.FC = () => {
                       </span>
                     </div>
 
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    <p className="text-sm text-foreground/75 mb-4 leading-relaxed">
                       {exp.description}
                     </p>
 

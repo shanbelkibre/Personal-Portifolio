@@ -106,7 +106,7 @@ const Hero = () => {
             </p>
 
             <p
-              className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-foreground/80 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
               style={{ animation: "hero-fade-in 0.6s ease-out 0.3s both" }}
             >
               {hero.bio}

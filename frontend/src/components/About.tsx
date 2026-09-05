@@ -10,7 +10,7 @@ const About = () => {
           <span className="text-primary uppercase">ABOUT </span><span className="text-gradient uppercase">ME</span>
         </h2>
 
-        <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+        <div className="space-y-6 text-lg text-foreground/80 leading-relaxed">
           {about.paragraphs.map((p, idx) => (
             <p key={idx}>{p}</p>
           ))}

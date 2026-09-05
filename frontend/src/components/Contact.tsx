@@ -86,7 +86,7 @@ const Contact = () => {
           <h2 className="text-3xl md:text-4xl font-extrabold mb-3">
             Get In <span className="text-gradient">Touch</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
             Available for freelance projects, full-stack development, and cybersecurity contracts. Send a message directly via email!
           </p>
         </div>

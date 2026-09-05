@@ -71,25 +71,13 @@ const Projects = () => {
       `}</style>
 
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
-          <div className="text-center sm:text-left w-full">
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-              <span className="text-primary uppercase">FEATURED </span><span className="text-gradient uppercase">PROJECTS</span>
-            </h2>
-            <p className="text-sm text-muted-foreground mt-2">
-              Click any project card to view full technical architecture and feature breakdown.
-            </p>
-          </div>
-
-          {isAdminLoggedIn && (
-            <Button
-              onClick={() => setIsCMSDrawerOpen(true)}
-              className="gap-2 shrink-0 shadow-md"
-            >
-              <Plus className="w-4 h-4" />
-              Add Project (CMS)
-            </Button>
-          )}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+            <span className="text-primary uppercase">FEATURED </span><span className="text-gradient uppercase">PROJECTS</span>
+          </h2>
+          <p className="text-sm text-foreground/70 mt-3 max-w-2xl mx-auto">
+            Click any project card to view full technical architecture and feature breakdown.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -157,7 +145,7 @@ const Projects = () => {
 
               {/* Card body */}
               <div className="p-6 flex flex-col flex-grow bg-card">
-                <p className="text-muted-foreground mb-6 flex-grow text-sm leading-relaxed line-clamp-3">
+                <p className="text-foreground/75 mb-6 flex-grow text-sm leading-relaxed line-clamp-3">
                   {project.description}
                 </p>
 
