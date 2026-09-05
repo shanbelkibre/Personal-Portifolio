@@ -14,7 +14,8 @@ const Hero = () => {
       className="relative w-full overflow-hidden pb-20"
       style={{
         minHeight: "100vh",
-        paddingTop: "90px",
+        paddingTop: "56px",
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -120,35 +121,31 @@ const Hero = () => {
               className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start mb-8"
               style={{ animation: "hero-fade-in 0.6s ease-out 0.4s both" }}
             >
-              <Button
-                asChild
-                size="lg"
-                className="gap-2 shadow-lg hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5"
+              {/* CTA Buttons — same hover style as social icons */}
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-secondary border border-border text-foreground font-semibold text-sm hover:bg-primary/20 hover:text-primary hover:border-primary/50 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 transition-all duration-200 shadow-sm"
               >
-                <a href="#contact">Get in Touch</a>
-              </Button>
+                Get in Touch
+              </a>
 
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="gap-2 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-secondary border border-border text-foreground font-semibold text-sm hover:bg-primary/20 hover:text-primary hover:border-primary/50 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 transition-all duration-200 shadow-sm"
               >
-                <a href="#projects">View Projects</a>
-              </Button>
+                View Projects
+              </a>
 
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="gap-2 border-primary/40 hover:bg-primary/10 shadow-sm"
+              <a
+                href={profilePdf}
+                target="_blank"
+                rel="noopener noreferrer"
                 title="View / Download Resume"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-secondary border border-border text-foreground font-semibold text-sm hover:bg-primary/20 hover:text-primary hover:border-primary/50 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 transition-all duration-200 shadow-sm"
               >
-                <a href={profilePdf} target="_blank" rel="noopener noreferrer">
-                  <Download className="w-4 h-4 text-primary" />
-                  View Resume
-                </a>
-              </Button>
+                <Download className="w-4 h-4" />
+                View Resume
+              </a>
 
               {isAdminLoggedIn && (
                 <Button
@@ -195,14 +192,36 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
-        <div className="w-6 h-10 border-2 border-primary/60 rounded-full flex items-start justify-center p-2">
-          <div className="w-1.5 h-3 bg-primary rounded-full" />
+      {/* Mouse scroll indicator */}
+      <a
+        href="#about"
+        aria-label="Scroll down"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group"
+      >
+        {/* Mouse body */}
+        <div className="w-6 h-10 rounded-full border-2 border-primary/60 group-hover:border-primary transition-colors duration-300 flex items-start justify-center pt-1.5">
+          {/* Scroll wheel dot */}
+          <div
+            className="w-1 h-2 bg-primary/80 rounded-full"
+            style={{
+              animation: "mouse-scroll 1.6s ease-in-out infinite",
+            }}
+          />
         </div>
-      </div>
+        {/* Label */}
+        <span className="text-[10px] font-medium text-muted-foreground/70 group-hover:text-primary tracking-widest uppercase transition-colors duration-300">
+          Scroll
+        </span>
+      </a>
 
       <style>{`
+        @keyframes mouse-scroll {
+          0%   { transform: translateY(0);    opacity: 1; }
+          60%  { transform: translateY(10px); opacity: 0; }
+          61%  { transform: translateY(-4px); opacity: 0; }
+          100% { transform: translateY(0);    opacity: 1; }
+        }
+
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-14px); }

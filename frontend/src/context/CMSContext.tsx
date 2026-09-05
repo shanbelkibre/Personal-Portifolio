@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 import houseRental from "@/assets/houserntal.jpg";
 import ethioIntern from "@/assets/Ethiointern.jpg";
@@ -149,18 +149,19 @@ const DEFAULT_HERO: HeroData = {
   name: "Shanbel Kibre",
   badgeText: "Available for freelance & full-stack roles",
   subtitle: "Software Engineer & Full-Stack Developer",
-  bio: "Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing.",
+  bio: "Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities to safeguard systems.",
   githubUrl: "https://github.com/shanbelkibre",
   linkedinUrl: "https://www.linkedin.com/in/shanbel-kibre/",
 };
 
 const DEFAULT_ABOUT: AboutData = {
   paragraphs: [
-    "I am a Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing.",
-    "Fascinated by learning new technologies and passionate about solving complex problems through innovative solutions.",
-    "Pursuing a Bachelor of Science in Software Engineering at Debre Birhan University.",
+    "I am a Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities to safeguard systems.",
+    "Fascinated by learning new technologies and passionate about solving complex problems through innovative, practical solutions. I specialize in React, Next.js, Node.js, Express, NestJS, Laravel, MongoDB, MySQL, and PostgreSQL.",
+    "Pursuing a Bachelor of Science in Software Engineering (Harmonized Modular Curriculum) at Debre Birhan University. Recognized as 3rd Place Winner in DBU Hackathon and participant in INSA Talent Summer Camp.",
   ],
 };
+
 
 const DEFAULT_CONTACT: ContactData = {
   email: "Shambel5110@gmail.com",

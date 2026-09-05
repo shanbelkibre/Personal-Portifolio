@@ -11,8 +11,8 @@ export const Experience: React.FC = () => {
       <div className="container max-w-6xl mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-3">
-            Work History & <span className="text-gradient">Experience</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
+            <span className="text-primary uppercase">WORK HISTORY & </span><span className="text-gradient uppercase">EXPERIENCE</span>
           </h2>
           <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto">
             Practical full-stack development, software engineering, and cybersecurity experience (2024 – 2026).
@@ -27,7 +27,7 @@ export const Experience: React.FC = () => {
                 <Briefcase className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">Professional Work History</h3>
+                <h3 className="text-xl font-extrabold uppercase tracking-wide text-primary">PROFESSIONAL WORK HISTORY</h3>
                 <p className="text-xs text-muted-foreground">Full-Stack Development Projects & Roles</p>
               </div>
             </div>

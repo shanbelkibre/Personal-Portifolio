@@ -73,8 +73,8 @@ const Projects = () => {
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
           <div className="text-center sm:text-left w-full">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Featured <span className="text-gradient">Projects</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              <span className="text-primary uppercase">FEATURED </span><span className="text-gradient uppercase">PROJECTS</span>
             </h2>
             <p className="text-sm text-muted-foreground mt-2">
               Click any project card to view full technical architecture and feature breakdown.
