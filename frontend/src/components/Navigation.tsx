@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon, Shield } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useCMS } from "@/context/CMSContext";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { isAdminLoggedIn } = useCMS();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,18 +51,6 @@ const Navigation = () => {
                 {link.label}
               </a>
             ))}
-
-            {/* Admin CMS Access Trigger */}
-            {/* <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => (isAdminLoggedIn ? setIsCMSDrawerOpen(true) : setIsAdminLoginOpen(true))}
-              className="text-muted-foreground hover:text-primary relative ml-1"
-              title={isAdminLoggedIn ? "Open Admin CMS" : "Admin Login (Ctrl+Shift+A)"}
-            >
-              <Shield className={`h-4 w-4 ${isAdminLoggedIn ? "text-primary" : ""}`} />
-              <span className="sr-only">Admin CMS</span>
-            </Button> */}
 
             {/* Theme Toggle */}
             <Button

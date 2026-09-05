@@ -107,7 +107,7 @@ const Index = () => {
         <Contact />
 
         <footer className="py-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>© 2026 Shanbel Kibre. All rights reserved. Built with React, TypeScript & Tailwind CSS.</p>
+          <p>© 2026 Shanbel Kibre. All rights reserved.</p>
         </footer>
       </div>
     </>

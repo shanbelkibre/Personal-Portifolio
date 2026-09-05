@@ -1,69 +1,81 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Project, useCMS } from "@/context/CMSContext";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, CheckCircle2, Sparkles, Edit, Layers } from "lucide-react";
+import {
+  ExternalLink,
+  Github,
+  CheckCircle2,
+  Sparkles,
+  Edit,
+  Layers,
+  AlertCircle,
+  Lightbulb,
+  Code2,
+  BookOpen,
+} from "lucide-react";
 
 interface ProjectDetailModalProps {
   project: Project | null;
   isOpen: boolean;
   onClose: () => void;
-  onEdit?: (project: Project) => void;
 }
 
 export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
   project,
   isOpen,
   onClose,
-  onEdit,
 }) => {
-  const { isAdminLoggedIn, setIsCMSDrawerOpen } = useCMS();
+  const { isAdminLoggedIn } = useCMS();
+  const navigate = useNavigate();
 
   if (!project) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card border-border shadow-2xl backdrop-blur-2xl p-0 overflow-hidden">
-        {/* Cover Image Header with Gradient Overlay */}
-        <div className="relative w-full h-64 md:h-80 overflow-hidden bg-black/40">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-black/40 to-transparent" />
+      <DialogContent className="max-w-3xl w-[95vw] max-h-[88vh] bg-card border-border shadow-2xl backdrop-blur-2xl p-0 overflow-y-auto rounded-2xl flex flex-col">
+        {/* Modal Header Frame */}
+        <div className="p-4 sm:p-6 pb-2">
+          {/* Framed Image Container with Full Visibility */}
+          <div className="relative w-full rounded-xl bg-white dark:bg-neutral-900 border border-border/70 p-2 sm:p-3 shadow-sm flex items-center justify-center overflow-hidden min-h-[180px] max-h-[220px]">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="max-h-[200px] max-w-full w-auto h-auto object-contain rounded-lg"
+              />
+            ) : (
+              <div className="h-40 flex items-center justify-center text-muted-foreground">
+                <Code2 className="w-10 h-10 stroke-1" />
+              </div>
+            )}
+          </div>
 
-          {project.category && (
-            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-primary text-primary-foreground shadow-md backdrop-blur-md">
-              {project.category}
-            </span>
-          )}
-
-          <div className="absolute bottom-4 left-6 right-6">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight drop-shadow-md">
+          {/* Project Title */}
+          <div className="pt-4 pb-2">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-foreground leading-tight tracking-tight">
               {project.title}
             </h2>
           </div>
         </div>
 
-        {/* Modal Body Content */}
-        <div className="p-6 md:p-8 space-y-6">
-          {/* Tech stack badges */}
+        {/* Modal Body Content (Scrollable) */}
+        <div className="p-4 sm:p-6 pt-1 space-y-5">
+          {/* Tech Stack Badges */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              <Layers className="w-3.5 h-3.5 text-primary" />
-              Technologies & Architecture
+            <div className="flex items-center gap-2 text-xs font-bold text-foreground/75 uppercase tracking-wider">
+              <Layers className="w-4 h-4 text-primary" />
+              Technologies & Stack Architecture
             </div>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((t) => (
                 <span
                   key={t}
-                  className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-md text-xs font-semibold"
+                  className="px-3 py-1 bg-primary/10 text-primary border border-primary/25 rounded-lg text-xs font-semibold"
                 >
                   {t}
                 </span>
@@ -71,24 +83,51 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Description */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-bold text-foreground">Project Overview</h3>
-            <p className="text-muted-foreground text-sm md:text-base leading-relaxed whitespace-pre-line">
+          {/* Problem Statement Card */}
+          <div className="bg-amber-500/10 dark:bg-amber-950/25 border border-amber-500/30 rounded-xl p-4 sm:p-5 space-y-2">
+            <div className="flex items-center gap-2 text-sm font-bold text-amber-600 dark:text-amber-400">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              The Problem & Challenge
+            </div>
+            <p className="text-foreground/90 text-sm sm:text-base leading-relaxed">
+              {project.problemStatement ||
+                `In this domain, users encountered significant hurdles with fragmented workflows, lack of transparent verified data, and inefficient communication channels between stakeholders.`}
+            </p>
+          </div>
+
+          {/* Solution & Implementation Card */}
+          <div className="bg-primary/5 dark:bg-primary/10 border border-primary/25 rounded-xl p-4 sm:p-5 space-y-2">
+            <div className="flex items-center gap-2 text-sm font-bold text-primary">
+              <Lightbulb className="w-4 h-4 flex-shrink-0" />
+              How It Was Solved (Technical Architecture & Solution)
+            </div>
+            <p className="text-foreground/90 text-sm sm:text-base leading-relaxed">
+              {project.solution ||
+                `Architected a modular full-stack solution featuring role-based workflows, dynamic filtering, secure API endpoints, and responsive user interfaces to streamline operations seamlessly.`}
+            </p>
+          </div>
+
+          {/* Detailed Overview */}
+          <div className="space-y-2 bg-secondary/20 p-4 sm:p-5 rounded-xl border border-border">
+            <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+              <BookOpen className="w-4 h-4 text-primary" />
+              Detailed Project Overview
+            </div>
+            <p className="text-foreground/80 text-sm sm:text-base leading-relaxed whitespace-pre-line">
               {project.longDescription || project.description}
             </p>
           </div>
 
           {/* Key Features Bullet List */}
           {project.features && project.features.length > 0 && (
-            <div className="space-y-3 bg-secondary/30 p-5 rounded-xl border border-border">
+            <div className="space-y-3 bg-secondary/30 dark:bg-secondary/20 p-4 sm:p-5 rounded-xl border border-border">
               <h3 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
                 Key Capabilities & Features
               </h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                 {project.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-xs md:text-sm text-foreground/90">
+                  <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-normal">
                     <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -97,23 +136,23 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             </div>
           )}
 
-          {/* Actions & Links */}
+          {/* Footer Actions */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border">
             <div className="flex flex-wrap items-center gap-3">
-              {project.github && (
-                <Button asChild size="default" variant="secondary" className="gap-2 shadow-sm">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer">
-                    <Github className="w-4 h-4" />
-                    Source Code
-                  </a>
-                </Button>
-              )}
-
               {project.demo && (
                 <Button asChild size="default" className="gap-2 shadow-md">
                   <a href={project.demo} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="w-4 h-4" />
-                    Live Demo Preview
+                    Open Live Demo
+                  </a>
+                </Button>
+              )}
+
+              {project.github && (
+                <Button asChild size="default" variant="secondary" className="gap-2 shadow-sm">
+                  <a href={project.github} target="_blank" rel="noopener noreferrer">
+                    <Github className="w-4 h-4" />
+                    View GitHub Code
                   </a>
                 </Button>
               )}
@@ -125,13 +164,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 size="sm"
                 onClick={() => {
                   onClose();
-                  setIsCMSDrawerOpen(true);
-                  if (onEdit) onEdit(project);
+                  navigate("/admin");
                 }}
                 className="gap-1.5 border-primary/50 text-primary hover:bg-primary/10"
               >
                 <Edit className="w-3.5 h-3.5" />
-                Edit in CMS
+                Edit in Admin CMS
               </Button>
             )}
           </div>

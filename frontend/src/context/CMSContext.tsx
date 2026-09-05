@@ -9,6 +9,8 @@ export interface Project {
   title: string;
   description: string;
   longDescription?: string;
+  problemStatement?: string;
+  solution?: string;
   features?: string[];
   tech: string[];
   github?: string;
@@ -95,8 +97,15 @@ const DEFAULT_PROJECTS: Project[] = [
     id: "house-rental",
     title: "Ethiopian House Rental System (INSA Summer Camp Project)",
     description: "A full-stack property rental platform with property listings, search, filtering, role-based authentication, and owner/renter communication features.",
-    longDescription: "Developed during the INSA Summer Camp, this full-stack property rental platform connects house owners and renters.",
-    features: ["Property listing, search, filtering, and favorites", "Role-based access for owners, renters/buyers, and administrators", "RESTful APIs and custom database architecture", "Real-time owner and renter communication workflows"],
+    longDescription: "Developed during the INSA Summer Camp, this full-stack property rental platform connects house owners and renters across Ethiopian cities with verified property listings and secure communication.",
+    problemStatement: "In Ethiopia, finding rental housing is traditionally disorganized, manual, and dominated by unverified middlemen charging hefty broker fees. Renters face fraudulent listings, lack of transparent pricing, and difficulty contacting legitimate property owners directly.",
+    solution: "Engineered an end-to-end full-stack web application leveraging Laravel RESTful APIs and a dynamic React frontend. Designed a role-based access control system for renters, owners, and admins, complete with advanced property filtering by location/price, verified owner dashboards, and direct inquiries.",
+    features: [
+      "Property listing, interactive search, multi-criteria filtering, and favorites",
+      "Role-based access control (RBAC) for owners, renters/buyers, and system administrators",
+      "RESTful API endpoints secured by Laravel Sanctum with custom MySQL relational database architecture",
+      "Real-time owner and renter communication workflows with inquiry notifications"
+    ],
     tech: ["Laravel", "React", "MySQL", "Tailwind CSS", "Sanctum", "REST API"],
     github: "https://github.com/shanbelkibre/house_rental_system",
     demo: "https://house-rental-system-ten.vercel.app/",
@@ -108,8 +117,15 @@ const DEFAULT_PROJECTS: Project[] = [
     id: "ethio-internship",
     title: "Ethio Internship Platform (DBU Hackathon 3rd Place Winner)",
     description: "A hackathon-winning internship platform connecting students, companies, and universities for internship opportunities.",
-    longDescription: "Engineered during the 2017 E.C. Debre Birhan University Hackathon (3rd Place Winner).",
-    features: ["3-Way portal for students, partner companies, and university admins", "Internship posting, application submissions, and status tracking", "Smart search and filtering across internship opportunities", "Local storage sync & progressive web capabilities"],
+    longDescription: "Engineered during the 2017 E.C. Debre Birhan University Hackathon (awarded 3rd Place Winner). Built under tight hackathon deadlines to bridge the gap between academic institutions and industry.",
+    problemStatement: "University students across Ethiopia struggle to discover verified internship vacancies, submit applications, and receive timely status updates. Concurrently, companies lack a streamlined, localized channel to recruit and evaluate university candidates.",
+    solution: "Created a centralized 3-way platform connecting students, hiring companies, and university coordinators. Implemented applicant tracking dashboards, verified company job postings, fast client-side state persistence, and responsive UI for both mobile and desktop access.",
+    features: [
+      "3-Way dedicated portal for students, partner companies, and university admins",
+      "Internship posting, real-time application submission, and status tracking pipeline",
+      "Smart search and multi-tag filtering across tech, business, and engineering opportunities",
+      "Local storage synchronization & progressive responsive mobile-first UI"
+    ],
     tech: ["HTML5", "CSS3", "JavaScript (ES6)", "LocalStorage API", "Tailwind CSS"],
     github: "https://github.com/shambelkibr/EthioInterShip_platform_DBU_Hackton",
     demo: "https://ethio-inter-ship-platform.vercel.app/",
@@ -117,19 +133,7 @@ const DEFAULT_PROJECTS: Project[] = [
     category: "Web Platform",
     featured: true,
   },
-  {
-    id: "react-portfolio",
-    title: "Modern Full-Stack & Cybersecurity Portfolio",
-    description: "A sleek, responsive personal portfolio showcasing modern web engineering, customizable color tokens, project deep dives, and keyboard-activated admin CMS.",
-    longDescription: "Designed to represent top-tier freelance standards.",
-    features: ["Dynamic color theme preset switching (Cyan, Emerald, Violet, Amber, Blue)", "Keyboard shortcut Ctrl+Shift+A for Admin CMS suite", "Modal-based project deep dive with rich media showcase", "Client-side LocalStorage data persistence with JSON export/import"],
-    tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
-    github: "https://github.com/shambelkibr/my-Portfolio-by-React",
-    demo: "https://shanbelkibremyportfolio.vercel.app/",
-    image: portfolio,
-    category: "Frontend UI",
-    featured: true,
-  },
+
 ];
 
 const DEFAULT_EXPERIENCES: ExperienceItem[] = [
@@ -202,12 +206,21 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (hasItems(data.projects)) {
         const assetMap = [houseRental, ethioIntern, portfolio];
-        const mapped = data.projects.map((p: Record<string, unknown>, i: number) => ({
-          ...p,
-          image: (p.image as string | null) || assetMap[i] || undefined,
-          tech: Array.isArray(p.tech) ? p.tech : [],
-          features: Array.isArray(p.features) ? p.features : [],
-        }));
+        const mapped = data.projects.map((p: Record<string, unknown>, i: number) => {
+          const def = DEFAULT_PROJECTS.find((dp) => dp.id === p.id || dp.title === p.title) || DEFAULT_PROJECTS[i] || {} as Partial<Project>;
+          return {
+            ...def,
+            ...p,
+            problemStatement: (p.problemStatement as string) || def.problemStatement || undefined,
+            solution: (p.solution as string) || def.solution || undefined,
+            longDescription: (p.longDescription as string) || def.longDescription || undefined,
+            image: (p.image as string | null) || assetMap[i] || def.image || undefined,
+            tech: Array.isArray(p.tech) && p.tech.length > 0 ? p.tech : (def.tech || []),
+            features: Array.isArray(p.features) && p.features.length > 0 ? p.features : (def.features || []),
+            github: (p.github as string) || (p.githubUrl as string) || def.github || undefined,
+            demo: (p.demo as string) || (p.demoUrl as string) || def.demo || undefined,
+          };
+        });
         setProjects(mapped);
       }
       if (hasItems(data.experiences)) setExperiences(data.experiences);

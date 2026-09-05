@@ -1,5 +1,6 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { projectsApi, categoriesApi, technologiesApi, type AdminProject, type AdminCategory, type AdminTechnology } from "@/services/adminApi";
+import { useCMS } from "@/context/CMSContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { Plus, Edit, Trash2, Star, Search, ExternalLink, Github } from "lucide-r
 import ProjectForm from "../forms/ProjectForm";
 
 const ProjectsSection: React.FC = () => {
+  const { refreshData } = useCMS();
   const [projects, setProjects] = useState<AdminProject[]>([]);
   const [categories, setCategories] = useState<AdminCategory[]>([]);
   const [technologies, setTechnologies] = useState<AdminTechnology[]>([]);
@@ -45,6 +47,8 @@ const ProjectsSection: React.FC = () => {
     try {
       await projectsApi.delete(id);
       setProjects((prev) => prev.filter((p) => p.id !== id));
+      // Instantly refresh global CMS context so main page updates immediately without delay
+      await refreshData();
     } catch (e) {
       alert("Failed to delete project");
     } finally {
@@ -52,7 +56,7 @@ const ProjectsSection: React.FC = () => {
     }
   };
 
-  const handleSave = (project: AdminProject) => {
+  const handleSave = async (project: AdminProject) => {
     if (editProject) {
       setProjects((prev) => prev.map((p) => (p.id === project.id ? project : p)));
     } else {
@@ -60,6 +64,8 @@ const ProjectsSection: React.FC = () => {
     }
     setFormOpen(false);
     setEditProject(null);
+    // Instantly refresh global CMS context
+    await refreshData();
   };
 
   return (

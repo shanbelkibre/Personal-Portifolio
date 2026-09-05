@@ -1,72 +1,107 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Eye, Edit, Plus } from "lucide-react";
+import { ExternalLink, Github, Eye } from "lucide-react";
 import { useCMS, Project } from "@/context/CMSContext";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
 
 const Projects = () => {
-  const { projects, isAdminLoggedIn, setIsCMSDrawerOpen } = useCMS();
+  const { projects } = useCMS();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
     <section id="projects" className="py-20">
       <style>{`
+        /* ── Card container ── */
         .project-card {
-          transition: transform 0.4s ease, box-shadow 0.4s ease;
+          transition:
+            transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.4s ease,
+            border-color 0.3s ease,
+            opacity 0.3s ease;
+          will-change: transform;
+          position: relative;
         }
+
+        /* Lift + glow shadow + border highlight on hover */
         .project-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 24px 80px hsl(var(--primary) / 0.25);
+          transform: translateY(-12px) scale(1.015);
+          box-shadow:
+            0 0 0 1.5px hsl(var(--primary) / 0.5),
+            0 20px 60px hsl(var(--primary) / 0.22),
+            0 8px 24px rgba(0,0,0,0.35);
+          border-color: hsl(var(--primary) / 0.5);
         }
-        .project-image-overlay {
-          background: linear-gradient(
-            to bottom,
-            rgba(0,0,0,0.15) 0%,
-            rgba(0,0,0,0.75) 100%
-          );
-          transition: background 0.4s ease;
+
+        /* Dim siblings when one card is hovered */
+        .projects-grid:hover .project-card:not(:hover) {
+          opacity: 0.72;
+          transform: translateY(0) scale(0.98);
         }
-        .project-card:hover .project-image-overlay {
-          background: linear-gradient(
-            to bottom,
-            rgba(0,0,0,0.4) 0%,
-            rgba(0,0,0,0.85) 100%
-          );
-        }
-        .project-title-overlay {
-          transform: translateY(0px);
-          transition: transform 0.4s ease;
-        }
-        .project-card:hover .project-title-overlay {
-          transform: translateY(-2px);
-        }
-        .project-hover-info {
-          opacity: 0;
-          transform: translateY(10px);
-          transition: opacity 0.4s ease, transform 0.4s ease;
+
+        /* ── Shimmer sweep on hover ── */
+        .project-card::before {
+          content: '';
           position: absolute;
-          bottom: 48px;
-          left: 0;
-          right: 0;
-          padding: 0 1rem;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 30%,
+            hsl(var(--primary) / 0.08) 50%,
+            transparent 70%
+          );
+          transform: translateX(-100%);
+          transition: transform 0.6s ease;
+          z-index: 1;
+          pointer-events: none;
+          border-radius: inherit;
         }
-        .project-card:hover .project-hover-info {
-          opacity: 1;
-          transform: translateY(0);
+        .project-card:hover::before {
+          transform: translateX(100%);
         }
+
+        /* ── Image zooms in smoothly ── */
+        .image-zoom {
+          transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .project-card:hover .image-zoom {
+          transform: scale(1.05);
+        }
+
+        /* ── Title color shift on hover ── */
+        .project-title-text {
+          transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .project-card:hover .project-title-text {
+          color: hsl(var(--primary));
+          transform: translateX(2px);
+        }
+
+        /* ── Card body description color shift ── */
+        .project-card .project-desc {
+          transition: color 0.3s ease;
+        }
+        .project-card:hover .project-desc {
+          color: hsl(var(--foreground));
+        }
+
+        /* ── Tech badge glow on hover ── */
+        .project-card .tech-badge {
+          transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+        .project-card:hover .tech-badge {
+          background: hsl(var(--primary) / 0.22);
+          color: hsl(var(--primary));
+          transform: translateY(-1px);
+        }
+
+        /* ── Entrance animation ── */
         @keyframes card-fade-in {
-          from { opacity: 0; transform: translateY(24px); }
+          from { opacity: 0; transform: translateY(28px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         .card-animate {
-          animation: card-fade-in 0.5s ease-out both;
-        }
-        .image-zoom {
-          transition: transform 0.6s ease;
-        }
-        .project-card:hover .image-zoom {
-          transform: scale(1.08);
+          animation: card-fade-in 0.55s ease-out both;
         }
       `}</style>
 
@@ -80,7 +115,7 @@ const Projects = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="projects-grid grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <Card
               key={project.id || project.title}
@@ -88,64 +123,33 @@ const Projects = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
               onClick={() => setSelectedProject(project)}
             >
-              {/* Image section */}
-              <div
-                className="relative w-full flex-shrink-0 overflow-hidden"
-                style={{ height: "240px" }}
-              >
-                {/* Background Image */}
+              {/* Image Frame with Margin and White Padding (Full image visible, not cropped) */}
+              <div className="p-3.5 sm:p-4 pb-0">
                 <div
-                  className="image-zoom absolute inset-0"
-                  style={{
-                    backgroundImage: `url(${project.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                />
+                  className="relative w-full rounded-xl bg-white dark:bg-card border border-border/60 p-2 sm:p-3 shadow-sm flex items-center justify-center overflow-hidden"
+                  style={{ height: "220px" }}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="image-zoom max-h-full max-w-full w-full h-full object-contain rounded-lg"
+                  />
 
-                {/* Gradient overlay */}
-                <div className="project-image-overlay absolute inset-0" />
-
-                {/* Tech tags on hover */}
-                <div className="project-hover-info">
-                  <div className="flex flex-wrap gap-1 justify-center">
-                    {project.tech.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-0.5 rounded text-xs font-semibold text-white backdrop-blur-sm"
-                        style={{ background: "hsl(var(--primary) / 0.85)" }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Category tag */}
-                {project.category && (
-                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-background/80 text-primary border border-primary/30 backdrop-blur-md">
-                    {project.category}
-                  </span>
-                )}
-
-                {/* Card Title overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3
-                    className="project-title-overlay text-white font-black leading-tight"
-                    style={{
-                      fontSize: "clamp(0.95rem, 2vw, 1.15rem)",
-                      textShadow:
-                        "0 2px 16px rgba(0,0,0,1), 0 1px 4px rgba(0,0,0,1)",
-                    }}
-                  >
-                    {project.title}
-                  </h3>
+                  {/* Category tag */}
+                  {project.category && (
+                    <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-background/90 text-primary border border-primary/30 backdrop-blur-md shadow-sm">
+                      {project.category}
+                    </span>
+                  )}
                 </div>
               </div>
 
               {/* Card body */}
-              <div className="p-6 flex flex-col flex-grow bg-card">
-                <p className="text-foreground/75 mb-6 flex-grow text-sm leading-relaxed line-clamp-3">
+              <div className="p-5 sm:p-6 flex flex-col flex-grow bg-card">
+                <h3 className="project-title-text text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-2">
+                  {project.title}
+                </h3>
+                <p className="project-desc text-foreground/75 mb-6 flex-grow text-sm leading-relaxed line-clamp-3">
                   {project.description}
                 </p>
 
@@ -154,7 +158,7 @@ const Projects = () => {
                     {project.tech.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2.5 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium"
+                        className="tech-badge px-2.5 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium"
                       >
                         {tech}
                       </span>

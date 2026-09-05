@@ -1,12 +1,10 @@
 import { Github, Linkedin, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import profileImg from "@/assets/profile.jpg";
-
 import profilePdf from "@/assets/profile.pdf";
 import { useCMS } from "@/context/CMSContext";
 
 const Hero = () => {
-  const { hero, isAdminLoggedIn } = useCMS();
+  const { hero } = useCMS();
 
   return (
     <section
@@ -141,18 +139,6 @@ const Hero = () => {
                 <Download className="w-4 h-4" />
                 View Resume
               </a>
-
-              {isAdminLoggedIn && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setIsCMSDrawerOpen(true)}
-                  className="gap-2 border-primary/50 text-primary hover:bg-primary/10"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Edit Hero (CMS)
-                </Button>
-              )}
             </div>
 
             <div
