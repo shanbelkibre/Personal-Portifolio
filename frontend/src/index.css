@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Default Light mode colors (Cyan accent default) */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 188 94% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 46%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 188 94% 40%;
+
+    --radius: 0.75rem;
+
+    /* Custom design tokens - Light mode */
+    --gradient-primary: linear-gradient(135deg, hsl(188 94% 40%), hsl(217 91% 60%));
+    --gradient-glow: linear-gradient(135deg, hsl(188 94% 40% / 0.15), hsl(217 91% 60% / 0.1));
+    --shadow-glow: 0 0 40px hsl(188 94% 40% / 0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    /* Dark mode base */
+    --background: 222.2 47.4% 9.5%;
+    --foreground: 210 40% 98%;
+
+    --card: 217.2 32.6% 14%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217.2 32.6% 14%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 188 94% 45%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 18%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 188 94% 45%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 22%;
+    --input: 217.2 32.6% 22%;
+    --ring: 188 94% 45%;
+
+    /* Custom design tokens - Dark mode */
+    --gradient-primary: linear-gradient(135deg, hsl(188 94% 45%), hsl(217 91% 60%));
+    --gradient-glow: linear-gradient(135deg, hsl(188 94% 45% / 0.2), hsl(217 91% 60% / 0.1));
+    --shadow-glow: 0 0 40px hsl(188 94% 45% / 0.3);
+  }
+
+  /* Dynamic Theme Presets */
+  html[data-theme-preset="cyan"] {
+    --primary: 188 94% 45%;
+    --ring: 188 94% 45%;
+    --gradient-primary: linear-gradient(135deg, hsl(188 94% 45%), hsl(217 91% 60%));
+    --shadow-glow: 0 0 40px hsl(188 94% 45% / 0.25);
+  }
+
+  html[data-theme-preset="emerald"] {
+    --primary: 160 84% 42%;
+    --ring: 160 84% 42%;
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 42%), hsl(188 94% 45%));
+    --shadow-glow: 0 0 40px hsl(160 84% 42% / 0.25);
+  }
+
+  html[data-theme-preset="violet"] {
+    --primary: 262 83% 62%;
+    --ring: 262 83% 62%;
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 62%), hsl(330 81% 60%));
+    --shadow-glow: 0 0 40px hsl(262 83% 62% / 0.25);
+  }
+
+  html[data-theme-preset="amber"] {
+    --primary: 38 92% 50%;
+    --ring: 38 92% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(38 92% 50%), hsl(12 88% 55%));
+    --shadow-glow: 0 0 40px hsl(38 92% 50% / 0.25);
+  }
+
+  html[data-theme-preset="blue"] {
+    --primary: 221 83% 53%;
+    --ring: 221 83% 53%;
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(262 83% 62%));
+    --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.25);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section {
+    @apply px-4 md:px-6;
+  }
+}
+
+.group:hover .flip-front {
+  transform: rotateY(-180deg);
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
+  }
+
+  .card-glow {
+    box-shadow: 0 4px 20px hsl(var(--primary) / 0.1);
+    transition: var(--transition-smooth);
+  }
+
+  .card-glow:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-4px);
+  }
+}

@@ -1,0 +1,168 @@
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+}
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Category {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @unique
+  projects Project[]
+
+  @@map("categories")
+}
+
+model Technology {
+  id          String              @id @default(uuid()) @db.Uuid
+  name        String              @unique
+  projects    ProjectTechnology[]
+  experiences ExperienceSkill[]
+
+  @@map("technologies")
+}
+
+model Company {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String       @unique
+  experiences Experience[]
+
+  @@map("companies")
+}
+
+model Project {
+  id              String              @id @default(uuid()) @db.Uuid
+  title           String
+  description     String
+  longDescription String?             @map("long_description")
+  githubUrl       String?             @map("github_url")
+  demoUrl         String?             @map("demo_url")
+  imageUrl        String?             @map("image_url")
+  featured        Boolean             @default(false)
+  createdAt       DateTime            @default(now()) @map("created_at")
+
+  categoryId String?   @db.Uuid @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  features     ProjectFeature[]
+  technologies ProjectTechnology[]
+
+  @@map("projects")
+}
+
+model ProjectFeature {
+  id          String  @id @default(uuid()) @db.Uuid
+  description String
+  orderIndex  Int     @default(0) @map("order_index")
+
+  projectId String  @db.Uuid @map("project_id")
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_features")
+}
+
+model ProjectTechnology {
+  projectId    String @db.Uuid @map("project_id")
+  technologyId String @db.Uuid @map("technology_id")
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, technologyId])
+  @@map("project_technologies")
+}
+
+model Experience {
+  id          String   @id @default(uuid()) @db.Uuid
+  role        String
+  periodStart String   @map("period_start")
+  periodEnd   String   @map("period_end")
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  companyId String?  @db.Uuid @map("company_id")
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  achievements ExperienceAchievement[]
+  skills       ExperienceSkill[]
+
+  @@map("experiences")
+}
+
+model ExperienceAchievement {
+  id           String @id @default(uuid()) @db.Uuid
+  description  String
+  orderIndex   Int    @default(0) @map("order_index")
+
+  experienceId String     @db.Uuid @map("experience_id")
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@map("experience_achievements")
+}
+
+model ExperienceSkill {
+  experienceId String @db.Uuid @map("experience_id")
+  technologyId String @db.Uuid @map("technology_id")
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@id([experienceId, technologyId])
+  @@map("experience_skills")
+}
+
+model Certification {
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  issuer    String
+  year      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("certifications")
+}
+
+model SiteConfig {
+  id              String @id @default(uuid()) @db.Uuid
+  heroName        String? @map("hero_name")
+  heroBadge       String? @map("hero_badge")
+  heroSubtitle    String? @map("hero_subtitle")
+  heroBio         String? @map("hero_bio")
+  heroGithub      String? @map("hero_github")
+  heroLinkedin    String? @map("hero_linkedin")
+  contactEmail    String? @map("contact_email")
+  contactPhone    String? @map("contact_phone")
+  contactLocation String? @map("contact_location")
+  themeColor      String? @map("theme_color")
+
+  paragraphs AboutParagraph[]
+
+  @@map("site_config")
+}
+
+model AboutParagraph {
+  id         String @id @default(uuid()) @db.Uuid
+  content    String
+  orderIndex Int    @default(0) @map("order_index")
+
+  configId String     @db.Uuid @map("config_id")
+  config   SiteConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
+
+  @@map("about_paragraphs")
+}
