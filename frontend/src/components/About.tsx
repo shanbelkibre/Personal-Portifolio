@@ -6,7 +6,7 @@ import {
   ShieldCheck,
   Sparkles,
   Users,
-  GraduationCap,
+  Bot,
   MapPin,
   Briefcase,
 } from "lucide-react";
@@ -81,11 +81,11 @@ const About = () => {
             <div className="pt-6 border-t border-border/60 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
               <div className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 hover:bg-secondary/70 hover:border-primary/40 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 cursor-default group">
                 <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
-                  <GraduationCap className="w-4 h-4" />
+                  <Bot className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-muted-foreground block text-[11px] uppercase tracking-wider font-medium">Education</span>
-                  <span className="font-semibold text-foreground text-xs sm:text-sm">BSc Software Engineering (DBU)</span>
+                  <span className="text-muted-foreground block text-[11px] uppercase tracking-wider font-medium">AI & ML Focus</span>
+                  <span className="font-semibold text-foreground text-xs sm:text-sm">AI-Powered Systems & Machine Learning</span>
                 </div>
               </div>
 

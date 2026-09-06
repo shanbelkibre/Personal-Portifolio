@@ -73,7 +73,13 @@ const ExperienceSection: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <h3 className="font-bold text-foreground text-base">{exp.role}</h3>
                     <Badge variant="outline" className="text-[10px] text-primary border-primary/30 gap-1">
-                      <Calendar className="w-2.5 h-2.5" />{exp.periodStart} – {exp.periodEnd}
+                      <Calendar className="w-2.5 h-2.5" />
+                      {(() => {
+                        const s = exp.periodStart?.trim();
+                        const e = exp.periodEnd?.trim();
+                        if (s && e) return s === e ? s : `${s} – ${e}`;
+                        return s || e || "N/A";
+                      })()}
                     </Badge>
                   </div>
                   <p className="text-sm font-medium text-primary/80 flex items-center gap-1 mb-2">

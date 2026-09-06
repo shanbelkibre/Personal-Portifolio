@@ -90,15 +90,25 @@ export const getPortfolio = async (req: Request, res: Response) => {
       tech: p.technologies.map(t => t.technology.name)
     }));
 
-    const mappedExperiences = experiences.map(e => ({
-      id: e.id,
-      role: e.role,
-      company: e.company?.name,
-      period: `${e.periodStart} - ${e.periodEnd}`,
-      description: e.description,
-      achievements: e.achievements.map(a => a.description),
-      skills: e.skills.map(s => s.technology.name)
-    }));
+    const mappedExperiences = experiences.map(e => {
+      const s = e.periodStart?.trim();
+      const end = e.periodEnd?.trim();
+      let period = "";
+      if (s && end) {
+        period = s === end ? s : `${s} – ${end}`;
+      } else {
+        period = s || end || "";
+      }
+      return {
+        id: e.id,
+        role: e.role,
+        company: e.company?.name,
+        period,
+        description: e.description,
+        achievements: e.achievements.map(a => a.description),
+        skills: e.skills.map(s => s.technology.name)
+      };
+    });
 
     // We send back a nested JSON structure similar to what the frontend expects
     res.json({

@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { experiencesApi, type AdminExperience, type AdminTechnology } from "@/services/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,8 +57,14 @@ const ExperienceForm: React.FC<Props> = ({ experience, technologies, onSave, onC
             <Field label="Company / Organization *" required value={company} onChange={setCompany} placeholder="Company Name" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Period Start" value={periodStart} onChange={setPeriodStart} placeholder="2024" />
-            <Field label="Period End" value={periodEnd} onChange={setPeriodEnd} placeholder="2025" />
+            <div>
+              <Field label="Period Start" value={periodStart} onChange={setPeriodStart} placeholder="e.g. 2024 (or leave blank)" />
+              <p className="text-[11px] text-muted-foreground mt-1">Starting year (e.g. 2024) or single year</p>
+            </div>
+            <div>
+              <Field label="Period End" value={periodEnd} onChange={setPeriodEnd} placeholder="e.g. 2025 or Present (or leave blank)" />
+              <p className="text-[11px] text-muted-foreground mt-1">End year, 'Present', or leave blank if single date</p>
+            </div>
           </div>
           <FieldArea label="Description" value={description} onChange={setDescription} placeholder="Role summary..." />
           <div className="space-y-2">
