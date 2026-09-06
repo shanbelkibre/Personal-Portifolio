@@ -26,6 +26,7 @@ const INTERESTS = [
   "Scalable Database Architecture & RESTful API Design",
   "Hackathons & Competitive Engineering",
   "Open Source Contributions & Modern Cloud Workflows",
+  "Future AI Security Engineer & DevOps with CI/CD",
 ];
 
 const About = () => {
