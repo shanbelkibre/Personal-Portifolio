@@ -63,38 +63,47 @@ const About = () => {
                 </p>
               </div>
 
-              {/* Developer Narrative - Concise, High-Contrast & Developer Styled */}
-              <div className="space-y-3 text-xs sm:text-sm text-foreground/90 mb-7 border-l-2 border-primary/40 pl-3.5 sm:pl-4">
-                <p className="leading-relaxed">
-                  I'm a <strong className="text-primary font-semibold">Software Engineer & Full-Stack Developer</strong> with hands-on expertise in <strong className="text-foreground font-semibold">cybersecurity and penetration testing</strong>, crafting secure, scalable, and responsive digital solutions.
-                </p>
-
-                <div className="space-y-2 pt-1 font-mono text-[11px] sm:text-xs">
-                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
-                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
-                    <span className="text-muted-foreground text-[11px] sm:text-xs">
-                      <strong className="text-foreground font-sans text-xs font-semibold">Stack:</strong> React, Next.js, Node.js, Express, NestJS, PostgreSQL, MySQL
-                    </span>
-                  </div>
-                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
-                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
-                    <span className="text-muted-foreground text-[11px] sm:text-xs">
-                      <strong className="text-foreground font-sans text-xs font-semibold">Focus:</strong> Secure APIs, Threat Analysis, Pentesting, AI Systems
-                    </span>
-                  </div>
-                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
-                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
-                    <span className="text-muted-foreground text-[11px] sm:text-xs">
-                      <strong className="text-foreground font-sans text-xs font-semibold">Honors:</strong> 3rd Place DBU Hackathon, INSA Talent Summer Camp (Addis Ababa Science and Technology University)
-                    </span>
-                  </div>
-                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
-                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
-                    <span className="text-muted-foreground text-[11px] sm:text-xs">
-                      <strong className="text-foreground font-sans text-xs font-semibold">Security:</strong> Cyber Security Student at GTST (Geez Tech Security Tester, Penetration Testing)
-                    </span>
-                  </div>
+              {/* Developer Narrative */}
+              <div className="space-y-4 mb-7">
+                <div className="border-l-2 border-primary/40 pl-3.5 sm:pl-4">
+                  <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
+                    I'm a <strong className="text-primary font-semibold">Software Engineer & Full-Stack Developer</strong> with hands-on expertise in <strong className="text-foreground font-semibold">cybersecurity and penetration testing</strong>, crafting secure, scalable, and responsive digital solutions.
+                  </p>
                 </div>
+
+                <ul className="space-y-3 pt-1">
+                  <li className="flex items-start gap-3 text-xs sm:text-sm text-foreground/85 hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-default group">
+                    <span className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0 group-hover:scale-125 transition-transform duration-200 shadow-sm" />
+                    <span>
+                      <strong className="text-foreground font-semibold">Stack: </strong>
+                      <span>React, Next.js, Node.js, Express, NestJS, PostgreSQL, MySQL</span>
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-3 text-xs sm:text-sm text-foreground/85 hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-default group">
+                    <span className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0 group-hover:scale-125 transition-transform duration-200 shadow-sm" />
+                    <span>
+                      <strong className="text-foreground font-semibold">Focus: </strong>
+                      <span>Secure APIs, Threat Analysis, Pentesting, AI Systems</span>
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-3 text-xs sm:text-sm text-foreground/85 hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-default group">
+                    <span className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0 group-hover:scale-125 transition-transform duration-200 shadow-sm" />
+                    <span>
+                      <strong className="text-foreground font-semibold">Honors: </strong>
+                      <span>3rd Place DBU Hackathon, INSA Talent Summer Camp (Addis Ababa Science and Technology University)</span>
+                    </span>
+                  </li>
+
+                  <li className="flex items-start gap-3 text-xs sm:text-sm text-foreground/85 hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-default group">
+                    <span className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0 group-hover:scale-125 transition-transform duration-200 shadow-sm" />
+                    <span>
+                      <strong className="text-foreground font-semibold">Security: </strong>
+                      <span>Cyber Security Student at GTST (Geez Tech Security Tester, Penetration Testing)</span>
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
 
