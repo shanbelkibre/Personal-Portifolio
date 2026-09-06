@@ -22,31 +22,31 @@ async function main() {
   await prisma.siteConfig.deleteMany({});
 
   const siteConfig = await prisma.siteConfig.create({
-      data: {
-        heroName: 'Shanbel Kibre',
-        heroBadge: 'Available for freelance & full-stack roles',
-        heroSubtitle: 'Software Engineer & Full-Stack Developer',
-        heroBio: 'Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities.',
-        heroGithub: 'https://github.com/shanbelkibre',
-        heroLinkedin: 'https://www.linkedin.com/in/shanbel-kibre/',
-        contactEmail: 'Shambel5110@gmail.com',
-        contactPhone: '094 6340 709 / +251 962 585 655',
-        contactLocation: 'Addis Ababa & Debre Birhan, Ethiopia',
-        themeColor: 'cyan',
-        paragraphs: {
-          create: [
-            { content: 'I am a Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities to safeguard systems.', orderIndex: 0 },
-            { content: 'Fascinated by learning new technologies and passionate about solving complex problems through innovative, practical solutions. I specialize in React, Next.js, Node.js, Express, NestJS, Laravel, MongoDB, MySQL, and PostgreSQL.', orderIndex: 1 },
-            { content: 'Pursuing a Bachelor of Science in Software Engineering (Harmonized Modular Curriculum) at Debre Birhan University. Recognized as 3rd Place Winner in DBU Hackathon and participant in INSA Talent Summer Camp.', orderIndex: 2 }
-          ]
-        }
+    data: {
+      heroName: 'Shanbel Kibre',
+      heroBadge: 'Available for freelance & full-stack roles',
+      heroSubtitle: 'Software Engineer & Full-Stack Developer',
+      heroBio: 'Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities.',
+      heroGithub: 'https://github.com/shanbelkibre',
+      heroLinkedin: 'https://www.linkedin.com/in/shanbel-kibre/',
+      contactEmail: 'Shambel5110@gmail.com',
+      contactPhone: '094 6340 709 / +251 962 585 655',
+      contactLocation: 'Addis Ababa & Debre Birhan, Ethiopia',
+      themeColor: 'cyan',
+      paragraphs: {
+        create: [
+          { content: 'I am a Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing. Skilled at building robust, scalable applications while identifying and resolving security vulnerabilities to safeguard systems.', orderIndex: 0 },
+          { content: 'Fascinated by learning new technologies and passionate about solving complex problems through innovative, practical solutions. I specialize in React, Next.js, Node.js, Express, NestJS, Laravel, MongoDB, MySQL, and PostgreSQL.', orderIndex: 1 },
+          { content: 'Pursuing a Bachelor of Science in Software Engineering (Harmonized Modular Curriculum) at Debre Birhan University. Recognized as 3rd Place Winner in DBU Hackathon and participant in INSA Talent Summer Camp.', orderIndex: 2 }
+        ]
       }
-    });
+    }
+  });
 
   // Basic categories
-  const webAppCategory = await prisma.category.upsert({ where: { name: 'Full-Stack Web App' }, update: {}, create: { name: 'Full-Stack Web App' }});
-  const webPlatformCategory = await prisma.category.upsert({ where: { name: 'Web Platform' }, update: {}, create: { name: 'Web Platform' }});
-  const uiCategory = await prisma.category.upsert({ where: { name: 'Frontend UI' }, update: {}, create: { name: 'Frontend UI' }});
+  const webAppCategory = await prisma.category.upsert({ where: { name: 'Full-Stack Web App' }, update: {}, create: { name: 'Full-Stack Web App' } });
+  const webPlatformCategory = await prisma.category.upsert({ where: { name: 'Web Platform' }, update: {}, create: { name: 'Web Platform' } });
+  const uiCategory = await prisma.category.upsert({ where: { name: 'Frontend UI' }, update: {}, create: { name: 'Frontend UI' } });
 
   // Technologies
   const techNames = ["Laravel", "React", "MySQL", "Tailwind CSS", "Sanctum", "REST API", "HTML5", "CSS3", "JavaScript (ES6)", "LocalStorage API", "TypeScript", "Vite", "shadcn/ui", "Framer Motion", "Node.js", "Express.js", "MongoDB", "PHP", "Bootstrap"];
@@ -122,43 +122,14 @@ async function main() {
     }
   });
 
-  await prisma.project.create({
-    data: {
-      title: 'Modern Full-Stack & Cybersecurity Portfolio',
-      description: 'A sleek, responsive personal portfolio showcasing modern web engineering, customizable color tokens, project deep dives, and keyboard-activated admin CMS.',
-      longDescription: 'Designed to represent top-tier freelance standards. Includes dynamic glassmorphism design tokens, full client-side CMS capability with secret keyboard triggers, and responsive interactive cards.',
-      githubUrl: 'https://github.com/shambelkibr/my-Portfolio-by-React',
-      demoUrl: 'https://shanbelkibremyportfolio.vercel.app/',
-      featured: true,
-      categoryId: uiCategory.id,
-      features: {
-        create: [
-          { description: 'Dynamic color theme preset switching (Cyan, Emerald, Violet, Amber, Blue)', orderIndex: 0 },
-          { description: 'Keyboard shortcut Ctrl+Shift+A for Admin CMS suite', orderIndex: 1 },
-          { description: 'Modal-based project deep dive with rich media showcase', orderIndex: 2 },
-          { description: 'Client-side LocalStorage data persistence with JSON export/import', orderIndex: 3 }
-        ]
-      },
-      technologies: {
-        create: [
-          { technologyId: techs["React"].id },
-          { technologyId: techs["TypeScript"].id },
-          { technologyId: techs["Vite"].id },
-          { technologyId: techs["Tailwind CSS"].id },
-          { technologyId: techs["shadcn/ui"].id },
-          { technologyId: techs["Framer Motion"].id }
-        ]
-      }
-    }
-  });
 
   // ------------------------------------
   // EXPERIENCES (Chronological: 2024 -> 2026)
   // ------------------------------------
-  const compClearance = await prisma.company.upsert({ where: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' }, update: {}, create: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' }});
-  const compHack = await prisma.company.upsert({ where: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' }, update: {}, create: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' }});
-  const compEcc = await prisma.company.upsert({ where: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }, update: {}, create: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }});
-  const compInsa = await prisma.company.upsert({ where: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }, update: {}, create: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }});
+  const compClearance = await prisma.company.upsert({ where: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' }, update: {}, create: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' } });
+  const compHack = await prisma.company.upsert({ where: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' }, update: {}, create: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' } });
+  const compEcc = await prisma.company.upsert({ where: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }, update: {}, create: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' } });
+  const compInsa = await prisma.company.upsert({ where: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }, update: {}, create: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' } });
 
   await prisma.experience.create({
     data: {
