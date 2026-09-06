@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCMS } from "@/context/CMSContext";
 import AdminDashboard from "./AdminDashboard";
@@ -86,9 +86,9 @@ const Admin: React.FC = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="Enter username"
                 disabled={loading}
-                autoComplete="username"
+                autoComplete="off"
                 className="bg-background"
               />
             </div>
@@ -103,7 +103,7 @@ const Admin: React.FC = () => {
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="••••••••••••"
                   disabled={loading}
                   autoComplete="current-password"
                   className="bg-background pr-10"
@@ -127,11 +127,6 @@ const Admin: React.FC = () => {
               )}
             </Button>
           </form>
-
-          {/* Footer hint */}
-          <p className="text-center text-[11px] text-muted-foreground mt-6">
-            Protected by JWT · bcrypt encrypted passwords
-          </p>
         </div>
       </div>
     </div>
