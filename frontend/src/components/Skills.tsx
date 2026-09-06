@@ -84,14 +84,14 @@ const Skills = () => {
             return (
               <div
                 key={skill.name}
-                className="skill-card flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl bg-card border border-border/50 shadow-sm"
+                className="skill-card flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 transition-all duration-300 cursor-default group"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <Icon
-                  className={`w-12 h-12 md:w-14 md:h-14 mb-4 ${isBlackIcon ? 'icon-black' : ''}`}
+                  className={`w-12 h-12 md:w-14 md:h-14 mb-4 group-hover:scale-110 transition-transform duration-300 ${isBlackIcon ? 'icon-black' : ''}`}
                   style={{ color: skill.color }}
                 />
-                <h3 className="text-sm md:text-base font-bold text-foreground text-center mb-1">
+                <h3 className="text-sm md:text-base font-bold text-foreground text-center mb-1 group-hover:text-primary transition-colors">
                   {skill.name}
                 </h3>
                 <p className="text-xs md:text-sm text-muted-foreground font-medium">
