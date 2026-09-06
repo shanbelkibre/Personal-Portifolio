@@ -16,7 +16,7 @@ const Index = () => {
     <>
       <Helmet>
         {/* Google Verification */}
-        <meta name="google-site-verification" content="d91ab87c866db596" />
+        <meta name="google-site-verification" content="b420e871e9bf9d66" />
 
         {/* Basic SEO */}
         <title>Shanbel Kibre | Software Engineer & Full-Stack Developer</title>
