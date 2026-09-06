@@ -18,7 +18,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Basic health check route
+// Root & Health Check Routes
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    message: 'Shanbel Kibre Portfolio API is running successfully',
+    endpoints: {
+      portfolio: '/api/portfolio',
+      health: '/health',
+      admin: '/api/admin',
+      auth: '/api/auth'
+    }
+  });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Backend is running' });
 });

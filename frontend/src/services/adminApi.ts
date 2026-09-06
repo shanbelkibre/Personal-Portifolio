@@ -1,7 +1,8 @@
-﻿// Centralized Admin API service
+// Centralized Admin API service
 // All requests automatically include the JWT token from localStorage
 
-const BASE_URL = "http://localhost:5000/api";
+const API_ROOT = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://personal-portifolio-ltpq.onrender.com");
+const BASE_URL = `${API_ROOT}/api`;
 
 function getToken(): string | null {
   return localStorage.getItem("admin_token");
