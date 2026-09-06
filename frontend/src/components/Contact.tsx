@@ -18,15 +18,9 @@ const Contact = () => {
     message: "",
   });
 
+  const [consent, setConsent] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submittedData, setSubmittedData] = useState<{ name: string; email: string; subject: string }>({
-    name: "",
-    email: "",
-    subject: "",
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -36,53 +30,72 @@ const Contact = () => {
     e.preventDefault();
     setStatusMessage(null);
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      toast.error("Please fill in all required fields.");
+    // Form Validations
+    if (!formData.name.trim()) {
+      const msg = "Please enter your name.";
+      toast.error(msg);
+      setStatusMessage({ type: "error", text: msg });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
+      const msg = "Please enter a valid email address.";
+      toast.error(msg);
+      setStatusMessage({ type: "error", text: msg });
+      return;
+    }
+
+    if (!formData.message.trim()) {
+      const msg = "Please enter your message.";
+      toast.error(msg);
+      setStatusMessage({ type: "error", text: msg });
+      return;
+    }
+
+    if (!consent) {
+      const msg = "Please accept the consent before submitting.";
+      toast.error(msg);
+      setStatusMessage({ type: "error", text: msg });
       return;
     }
 
     setIsSending(true);
 
     try {
-      // Attempt EmailJS send
+      const templateParams = {
+        from_name: formData.name.trim(),
+        from_email: formData.email.trim(),
+        subject: formData.subject.trim() || "Portfolio Contact Request",
+        message: formData.message.trim(),
+        to_email: contact?.email || "shambel5110@gmail.com",
+        email: contact?.email || "shambel5110@gmail.com",
+        shanbelkibre: formData.name.trim(),
+        title: formData.subject.trim() || "Portfolio Contact Request",
+        submission_time: new Date().toISOString(),
+      };
+
       await emailjs.send(
         emailConfig.serviceId || "service_portfolio",
         emailConfig.templateId || "template_contact",
+        templateParams,
         {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject || "Portfolio Contact Request",
-          message: formData.message,
-          to_email: contact?.email || "",
-
-          // Matching EmailJS template parameters
-          email: contact?.email || "shambel5110@gmail.com",
-          shanbelkibre: formData.name,
-          title: formData.subject || "Portfolio Contact Request",
-        },
-        {
-          publicKey: emailConfig.publicKey !== "user_public_key_placeholder" ? emailConfig.publicKey : undefined
+          publicKey: emailConfig.publicKey !== "user_public_key_placeholder" ? emailConfig.publicKey : undefined,
         }
       );
 
-      // Save submission data for the Thank You card
-      setSubmittedData({
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-      });
-      setIsSubmitted(true);
-
-      toast.success("Thank you! Your message has been sent successfully.");
+      // Reset form and show success message
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (err: unknown) {
-      const error = err as { text?: string; message?: string };
-      const errorMessage = error?.text || error?.message || "Unknown error occurred";
-      toast.error(`EmailJS: ${errorMessage}`);
-      setStatusMessage({
-        type: "error",
-        text: `Error sending message: ${errorMessage}. Please try again or reach out directly at ${contact?.email || 'shambel5110@gmail.com'}.`,
-      });
+      setConsent(false);
+      const successText = "Message sent successfully! Thank you for contacting me.";
+      toast.success(successText);
+      setStatusMessage({ type: "success", text: successText });
+    } catch (err) {
+      // Technical errors logged only in console for development
+      console.error("Submission failed:", err);
+      const errorText = "Sorry, your message could not be sent. Please try again.";
+      toast.error(errorText);
+      setStatusMessage({ type: "error", text: errorText });
     } finally {
       setIsSending(false);
     }
@@ -110,17 +123,14 @@ const Contact = () => {
                   Contact Information
                 </h3>
 
-                {/* Email Item - Smoothly focuses the contact form */}
+                {/* Email Item - Focuses the contact form */}
                 <a
                   href="#email"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (isSubmitted) setIsSubmitted(false);
-                    setTimeout(() => {
-                      const nameInput = document.querySelector<HTMLInputElement>('input[name="name"]');
-                      nameInput?.focus();
-                      nameInput?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }, 50);
+                    const nameInput = document.querySelector<HTMLInputElement>('input[name="name"]');
+                    nameInput?.focus();
+                    nameInput?.scrollIntoView({ behavior: "smooth", block: "center" });
                   }}
                   className="flex items-start gap-4 p-4 rounded-xl bg-secondary/30 border border-border/40 hover:bg-secondary/70 hover:border-primary/40 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 group block cursor-pointer"
                 >
@@ -173,156 +183,120 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* EmailJS Contact Form or Thank You Card (7 cols) */}
+          {/* Email Contact Form (7 cols) */}
           <div className="reveal-right lg:col-span-7 flex" id="email">
             <Card className="w-full p-6 sm:p-8 bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col justify-between">
-              {isSubmitted ? (
-                /* Personalized Thank You Response Card */
-                <div className="py-6 sm:py-8 flex flex-col items-center text-center space-y-4 animate-fade-in my-auto">
-                  <div className="w-16 h-16 rounded-2xl bg-emerald-500/15 border-2 border-emerald-500/30 flex items-center justify-center text-emerald-500 shadow-lg shadow-emerald-500/10">
-                    <CheckCircle className="w-8 h-8" />
-                  </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Send className="w-5 h-5 text-primary" />
+                  Send Me a Message
+                </h3>
+                <p className="text-xs text-muted-foreground mb-6">
+                  Fill in your details below and I will get back to you within 24 hours.
+                </p>
 
-                  <div className="space-y-2 max-w-md">
-                    <h3 className="text-2xl font-bold text-foreground">
-                      Thank You, <span className="text-primary">{submittedData.name}</span>!
-                    </h3>
-                    <p className="text-sm text-foreground/80 leading-relaxed">
-                      Your message has been successfully delivered. I have received your request and will get back to you shortly.
-                    </p>
-                  </div>
-
-                  {/* Message Receipt Summary */}
-                  <div className="w-full max-w-md p-4 rounded-xl bg-secondary/50 border border-border/60 text-xs text-left space-y-2">
-                    <div className="flex justify-between border-b border-border/40 pb-2">
-                      <span className="text-muted-foreground">Recipient:</span>
-                      <span className="font-semibold text-foreground">Shanbel Kibre</span>
-                    </div>
-                    <div className="flex justify-between border-b border-border/40 pb-2">
-                      <span className="text-muted-foreground">Reply Destination:</span>
-                      <span className="font-semibold text-foreground">{submittedData.email}</span>
-                    </div>
-                    {submittedData.subject && (
-                      <div className="flex justify-between border-b border-border/40 pb-2">
-                        <span className="text-muted-foreground">Subject:</span>
-                        <span className="font-semibold text-foreground">{submittedData.subject}</span>
-                      </div>
-                    )}
-                    <p className="text-emerald-500 dark:text-emerald-400 font-medium pt-1 flex items-center gap-1.5">
-                      <CheckCircle className="w-3.5 h-3.5 shrink-0" />
-                      Expected reply within 24 hours.
-                    </p>
-                  </div>
-
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsSubmitted(false)}
-                    className="mt-2 gap-2 border-border/80 hover:border-primary/50"
+                {statusMessage && (
+                  <div
+                    className={`p-4 rounded-xl mb-6 flex items-start gap-3 text-xs md:text-sm font-medium ${
+                      statusMessage.type === "success"
+                        ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
+                        : "bg-destructive/10 border border-destructive/30 text-destructive"
+                    }`}
                   >
-                    <Send className="w-4 h-4" />
-                    Send Another Message
-                  </Button>
-                </div>
-              ) : (
-                /* Contact Form */
-                <div>
-                  <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
-                    <Send className="w-5 h-5 text-primary" />
-                    Send Me a Message
-                  </h3>
-                  <p className="text-xs text-muted-foreground mb-6">
-                    Fill in your details below and I will get back to you within 24 hours.
-                  </p>
+                    {statusMessage.type === "success" ? (
+                      <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    )}
+                    <span>{statusMessage.text}</span>
+                  </div>
+                )}
 
-                  {statusMessage && (
-                    <div
-                      className={`p-4 rounded-xl mb-6 flex items-start gap-3 text-xs md:text-sm font-medium ${statusMessage.type === "success"
-                          ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
-                          : "bg-destructive/10 border border-destructive/30 text-destructive"
-                        }`}
-                    >
-                      {statusMessage.type === "success" ? (
-                        <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                      ) : (
-                        <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                      )}
-                      <span>{statusMessage.text}</span>
-                    </div>
-                  )}
-
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-muted-foreground">Your Name *</label>
-                        <Input
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          placeholder="e.g. John Doe"
-                          required
-                          className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary transition-all duration-200"
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-muted-foreground">Your Email *</label>
-                        <Input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="john@example.com"
-                          required
-                          className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary transition-all duration-200"
-                        />
-                      </div>
-                    </div>
-
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground">Subject</label>
+                      <label className="text-xs font-semibold text-muted-foreground">Your Name </label>
                       <Input
-                        name="subject"
-                        value={formData.subject}
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
-                        placeholder="Project Inquiry / Job Opportunity"
+                        placeholder="e.g. shanbel kibre"
+                        required
                         className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary transition-all duration-200"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground">Message *</label>
-                      <Textarea
-                        rows={4}
-                        name="message"
-                        value={formData.message}
+                      <label className="text-xs font-semibold text-muted-foreground">Your Email </label>
+                      <Input
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
-                        placeholder="Hi Shanbel, I'd like to discuss a project with you..."
+                        placeholder="shambel5110@gmail.com"
                         required
-                        className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary resize-none transition-all duration-200"
+                        className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary transition-all duration-200"
                       />
                     </div>
+                  </div>
 
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={isSending}
-                      className="w-full gap-2 shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-200"
-                    >
-                      {isSending ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending Message...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-5 h-5" />
-                          Send Message via Email
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                </div>
-              )}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-muted-foreground">Subject</label>
+                    <Input
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Project Inquiry / Job Opportunity"
+                      className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary transition-all duration-200"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-muted-foreground">Message </label>
+                    <Textarea
+                      rows={4}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Hi Shanbel, I'd like to discuss a project with you..."
+                      required
+                      className="bg-secondary/30 border-border/70 hover:border-primary/40 focus-visible:ring-primary resize-none transition-all duration-200"
+                    />
+                  </div>
+
+                  {/* Consent Checkbox */}
+                  <div className="pt-1">
+                    <label className="flex items-start gap-2.5 cursor-pointer text-xs text-muted-foreground select-none">
+                      <input
+                        type="checkbox"
+                        checked={consent}
+                        onChange={(e) => setConsent(e.target.checked)}
+                        className="mt-0.5 rounded border-border text-primary focus:ring-primary h-4 w-4 cursor-pointer accent-primary"
+                      />
+                      <span>I agree to have my information used to respond to my message.</span>
+                    </label>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSending}
+                    className="w-full gap-2 shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-200"
+                  >
+                    {isSending ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Send Message via Email
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </div>
             </Card>
           </div>
         </div>
