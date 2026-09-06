@@ -1,11 +1,21 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Seeding database with Prisma...');
 
- 
+  // Upsert the Admin user
+  const passwordHash = await bcrypt.hash('Sha2030P@#', 10);
+  const admin = await prisma.user.upsert({
+    where: { username: 'shanboman' },
+    update: {},
+    create: {
+      username: 'shanboman',
+      passwordHash: passwordHash,
+    },
+  });
 
   // Clear existing SiteConfig and paragraphs to apply the new text
   await prisma.aboutParagraph.deleteMany({});
