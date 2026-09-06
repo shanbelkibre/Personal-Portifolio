@@ -49,31 +49,52 @@ const About = () => {
           {/* Left Card: My Story & Personal Info */}
           <div className="bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-primary/40 transition-colors duration-300">
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6">
-                My Story
-              </h3>
+              <div className="mb-5">
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+                    My Story
+                  </h3>
+                  <span className="font-mono text-[11px] px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 font-medium">
+                    dev.bio
+                  </span>
+                </div>
+                <p className="text-xs text-primary font-medium mt-1">
+                  Passionate Engineer & Problem Solver
+                </p>
+              </div>
 
-              {/* Dynamic Paragraphs from CMS */}
-              <div className="space-y-4 text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
-                {about.paragraphs && about.paragraphs.length > 0 ? (
-                  about.paragraphs.map((p, idx) => (
-                    <p key={idx} className="text-foreground/85">
-                      {p}
-                    </p>
-                  ))
-                ) : (
-                  <>
-                    <p className="text-foreground/85">
-                      I'm <strong className="text-foreground">Shanbel Kibre</strong>, a Software Engineer & Full-Stack Developer with hands-on expertise in <strong className="text-foreground">cybersecurity and penetration testing</strong>.
-                    </p>
-                    <p className="text-foreground/85">
-                      My main focus is engineering scalable, resilient, and user-centric web applications using modern stacks such as <strong className="text-foreground">React, Next.js, Node.js, Express, NestJS, Restful API, MySQL, and PostgreSQL</strong>.
-                    </p>
-                    <p className="text-foreground/85">
-                      Recognized as <strong className="text-foreground">3rd Place Winner</strong> in the DBU Hackathon and a participant in the <strong className="text-foreground">INSA Talent Summer Camp</strong>.
-                    </p>
-                  </>
-                )}
+              {/* Developer Narrative - Concise, High-Contrast & Developer Styled */}
+              <div className="space-y-3 text-xs sm:text-sm text-foreground/90 mb-7 border-l-2 border-primary/40 pl-3.5 sm:pl-4">
+                <p className="leading-relaxed">
+                  I'm a <strong className="text-primary font-semibold">Software Engineer & Full-Stack Developer</strong> with hands-on expertise in <strong className="text-foreground font-semibold">cybersecurity and penetration testing</strong>, crafting secure, scalable, and responsive digital solutions.
+                </p>
+
+                <div className="space-y-2 pt-1 font-mono text-[11px] sm:text-xs">
+                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
+                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
+                    <span className="text-muted-foreground text-[11px] sm:text-xs">
+                      <strong className="text-foreground font-sans text-xs font-semibold">Stack:</strong> React, Next.js, Node.js, Express, NestJS, PostgreSQL, MySQL
+                    </span>
+                  </div>
+                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
+                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
+                    <span className="text-muted-foreground text-[11px] sm:text-xs">
+                      <strong className="text-foreground font-sans text-xs font-semibold">Focus:</strong> Secure APIs, Threat Analysis, Pentesting, AI Systems
+                    </span>
+                  </div>
+                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
+                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
+                    <span className="text-muted-foreground text-[11px] sm:text-xs">
+                      <strong className="text-foreground font-sans text-xs font-semibold">Honors:</strong> 3rd Place DBU Hackathon, INSA Talent Summer Camp (Addis Ababa Science and Technology University)
+                    </span>
+                  </div>
+                  <div className="flex items-start sm:items-center gap-2 px-2.5 py-1.5 rounded-lg bg-secondary/50 border border-border/60">
+                    <span className="text-primary font-bold select-none mt-0.5 sm:mt-0">❯</span>
+                    <span className="text-muted-foreground text-[11px] sm:text-xs">
+                      <strong className="text-foreground font-sans text-xs font-semibold">Security:</strong> Cyber Security Student at GTST (Geez Tech Security Tester, Penetration Testing)
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 

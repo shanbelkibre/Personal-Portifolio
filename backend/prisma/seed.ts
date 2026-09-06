@@ -153,63 +153,12 @@ async function main() {
   });
 
   // ------------------------------------
-  // EXPERIENCES
+  // EXPERIENCES (Chronological: 2024 -> 2026)
   // ------------------------------------
-  const compInsa = await prisma.company.upsert({ where: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }, update: {}, create: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }});
-  const compEcc = await prisma.company.upsert({ where: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }, update: {}, create: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }});
   const compClearance = await prisma.company.upsert({ where: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' }, update: {}, create: { name: 'Debre Birhan University Clearance Management System (2nd Year Final Project)' }});
   const compHack = await prisma.company.upsert({ where: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' }, update: {}, create: { name: 'Ethio Internship Platform (DBU Hackathon 3rd Winner)' }});
-
-  await prisma.experience.create({
-    data: {
-      role: 'Full Stack Developer',
-      companyId: compInsa.id,
-      periodStart: '2025',
-      periodEnd: '2026',
-      description: 'Developed a full-stack property rental platform connecting house owners and renters in Debre Birhan town.',
-      achievements: {
-        create: [
-          { description: 'Developed a property rental platform with property listing, search, filtering, authentication, and communication features.', orderIndex: 0 },
-          { description: 'Implemented role-based access for property owners, renters/buyers, and administrators.', orderIndex: 1 },
-          { description: 'Designed RESTful APIs, database architecture, and responsive frontend interfaces.', orderIndex: 2 }
-        ]
-      },
-      skills: {
-        create: [
-          { technologyId: techs["Laravel"].id },
-          { technologyId: techs["React"].id },
-          { technologyId: techs["MySQL"].id },
-          { technologyId: techs["REST API"].id },
-          { technologyId: techs["Tailwind CSS"].id }
-        ]
-      }
-    }
-  });
-
-  await prisma.experience.create({
-    data: {
-      role: 'Full Stack Developer',
-      companyId: compEcc.id,
-      periodStart: '2025',
-      periodEnd: '2025',
-      description: 'Built an e-commerce platform supporting product management, search, shopping cart, orders, and authentication.',
-      achievements: {
-        create: [
-          { description: 'Built an e-commerce platform supporting product management, search, shopping cart, orders, authentication, and administration.', orderIndex: 0 },
-          { description: 'Developed responsive interfaces and backend APIs for managing users, products, categories, and orders.', orderIndex: 1 }
-        ]
-      },
-      skills: {
-        create: [
-          { technologyId: techs["React"].id },
-          { technologyId: techs["Node.js"].id },
-          { technologyId: techs["Express.js"].id },
-          { technologyId: techs["MongoDB"].id },
-          { technologyId: techs["REST API"].id }
-        ]
-      }
-    }
-  });
+  const compEcc = await prisma.company.upsert({ where: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }, update: {}, create: { name: 'Debre Birhan Town E-Commerce Platform (Internship Project)' }});
+  const compInsa = await prisma.company.upsert({ where: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }, update: {}, create: { name: 'Ethiopian House Rental System (INSA Summer Camp Project)' }});
 
   await prisma.experience.create({
     data: {
@@ -260,13 +209,64 @@ async function main() {
     }
   });
 
+  await prisma.experience.create({
+    data: {
+      role: 'Full Stack Developer',
+      companyId: compEcc.id,
+      periodStart: '2025',
+      periodEnd: '2025',
+      description: 'Built an e-commerce platform supporting product management, search, shopping cart, orders, and authentication.',
+      achievements: {
+        create: [
+          { description: 'Built an e-commerce platform supporting product management, search, shopping cart, orders, authentication, and administration.', orderIndex: 0 },
+          { description: 'Developed responsive interfaces and backend APIs for managing users, products, categories, and orders.', orderIndex: 1 }
+        ]
+      },
+      skills: {
+        create: [
+          { technologyId: techs["React"].id },
+          { technologyId: techs["Node.js"].id },
+          { technologyId: techs["Express.js"].id },
+          { technologyId: techs["MongoDB"].id },
+          { technologyId: techs["REST API"].id }
+        ]
+      }
+    }
+  });
+
+  await prisma.experience.create({
+    data: {
+      role: 'Full Stack Developer',
+      companyId: compInsa.id,
+      periodStart: '2025',
+      periodEnd: '2026',
+      description: 'Developed a full-stack property rental platform connecting house owners and renters in Debre Birhan town.',
+      achievements: {
+        create: [
+          { description: 'Developed a property rental platform with property listing, search, filtering, authentication, and communication features.', orderIndex: 0 },
+          { description: 'Implemented role-based access for property owners, renters/buyers, and administrators.', orderIndex: 1 },
+          { description: 'Designed RESTful APIs, database architecture, and responsive frontend interfaces.', orderIndex: 2 }
+        ]
+      },
+      skills: {
+        create: [
+          { technologyId: techs["Laravel"].id },
+          { technologyId: techs["React"].id },
+          { technologyId: techs["MySQL"].id },
+          { technologyId: techs["REST API"].id },
+          { technologyId: techs["Tailwind CSS"].id }
+        ]
+      }
+    }
+  });
+
   // ------------------------------------
   // CERTIFICATIONS
   // ------------------------------------
   await prisma.certification.createMany({
     data: [
       { title: 'Cyber Security Student – GTST, Round 14', issuer: 'Global Talent Security Training (GTST)', year: '2025' },
-      { title: 'INSA Talent Summer Camp Student – 5th Round, 2018 E.C.', issuer: 'Information Network Security Administration (INSA)', year: '2025 - 2026' },
+      { title: 'INSA Talent Summer Camp Student – 5th Round (Addis Ababa Science and Technology University)', issuer: 'Information Network Security Administration (INSA) & AASTU', year: '2025 - 2026' },
       { title: 'DBU Hackathon, 2017 E.C. – 3rd Place, Innovation and Creativity', issuer: 'Debre Birhan University', year: '2024 - 2025' },
     ],
   });

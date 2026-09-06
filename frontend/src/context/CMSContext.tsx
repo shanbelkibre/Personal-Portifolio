@@ -136,17 +136,32 @@ const DEFAULT_PROJECTS: Project[] = [
 
 ];
 
+const sortExperiencesChronological = (items: ExperienceItem[]): ExperienceItem[] => {
+  return [...items].sort((a, b) => {
+    const getYears = (p: string) => {
+      const nums = p.match(/\d{4}/g);
+      const start = nums && nums[0] ? parseInt(nums[0], 10) : 0;
+      const end = nums && nums[1] ? parseInt(nums[1], 10) : start;
+      return { start, end };
+    };
+    const aY = getYears(a.period || "");
+    const bY = getYears(b.period || "");
+    if (aY.start !== bY.start) return aY.start - bY.start;
+    return aY.end - bY.end;
+  });
+};
+
 const DEFAULT_EXPERIENCES: ExperienceItem[] = [
-  { id: "exp-1", role: "Full Stack Developer", company: "Ethiopian House Rental System (INSA Summer Camp Project)", period: "2025 - 2026", description: "Developed a full-stack property rental platform.", achievements: ["Built property rental platform with listing, search, filtering, authentication.", "Implemented role-based access for property owners, renters, and administrators.", "Designed RESTful APIs, database architecture, and responsive frontend."], skills: ["Laravel", "React", "MySQL", "REST APIs", "Tailwind CSS"] },
-  { id: "exp-2", role: "Full Stack Developer", company: "Debre Birhan Town E-Commerce Platform (Internship Project)", period: "2025", description: "Built an e-commerce platform.", achievements: ["Built e-commerce platform with product management, shopping cart, orders.", "Developed responsive interfaces and backend APIs."], skills: ["React", "Node.js", "Express.js", "MongoDB", "REST APIs"] },
   { id: "exp-3", role: "Full Stack Developer", company: "Debre Birhan University Clearance Management System", period: "2024 - 2025", description: "Developed digital clearance workflow.", achievements: ["Developed digital clearance workflow for students and departments.", "Implemented role-based approval, tracking, and dashboards."], skills: ["PHP", "MySQL", "JavaScript", "HTML5/CSS3", "Bootstrap"] },
   { id: "exp-4", role: "Full Stack Developer", company: "Ethio Internship Platform (DBU Hackathon 3rd Winner)", period: "2024 - 2025", description: "Built internship platform.", achievements: ["Built platform connecting students, universities, and companies.", "Implemented profiles, postings, applications, search/filtering."], skills: ["JavaScript ES6", "HTML5", "CSS3", "LocalStorage API"] },
+  { id: "exp-2", role: "Full Stack Developer", company: "Debre Birhan Town E-Commerce Platform (Internship Project)", period: "2025", description: "Built an e-commerce platform.", achievements: ["Built e-commerce platform with product management, shopping cart, orders.", "Developed responsive interfaces and backend APIs."], skills: ["React", "Node.js", "Express.js", "MongoDB", "REST APIs"] },
+  { id: "exp-1", role: "Full Stack Developer", company: "Ethiopian House Rental System (INSA Summer Camp Project)", period: "2025 - 2026", description: "Developed a full-stack property rental platform.", achievements: ["Built property rental platform with listing, search, filtering, authentication.", "Implemented role-based access for property owners, renters, and administrators.", "Designed RESTful APIs, database architecture, and responsive frontend."], skills: ["Laravel", "React", "MySQL", "REST APIs", "Tailwind CSS"] },
 ];
 
 const DEFAULT_CERTIFICATIONS: CertificationItem[] = [
-  { id: "cert-1", title: "Cyber Security Student – GTST, Round 14", issuer: "Global Talent Security Training (GTST)", year: "2025" },
-  { id: "cert-2", title: "INSA Talent Summer Camp Student – 5th Round, 2018 E.C.", issuer: "Information Network Security Administration (INSA)", year: "2025 - 2026" },
   { id: "cert-3", title: "DBU Hackathon, 2017 E.C. – 3rd Place, Innovation and Creativity", issuer: "Debre Birhan University", year: "2024 - 2025" },
+  { id: "cert-1", title: "Cyber Security Student – GTST, Round 14", issuer: "Geez Tech Security Tester (GTST)", year: "2025" },
+  { id: "cert-2", title: "INSA Talent Summer Camp Student – 5th Round (Addis Ababa Science and Technology University)", issuer: "Information Network Security Administration (INSA) & AASTU", year: "2025 - 2026" },
 ];
 
 const DEFAULT_HERO: HeroData = {
@@ -186,7 +201,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
-  const [experiences, setExperiences] = useState<ExperienceItem[]>(DEFAULT_EXPERIENCES);
+  const [experiences, setExperiences] = useState<ExperienceItem[]>(() => sortExperiencesChronological(DEFAULT_EXPERIENCES));
   const [certifications, setCertifications] = useState<CertificationItem[]>(DEFAULT_CERTIFICATIONS);
   const [hero, setHero] = useState<HeroData>(DEFAULT_HERO);
   const [about, setAbout] = useState<AboutData>(DEFAULT_ABOUT);
@@ -223,7 +238,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         });
         setProjects(mapped);
       }
-      if (hasItems(data.experiences)) setExperiences(data.experiences);
+      if (hasItems(data.experiences)) setExperiences(sortExperiencesChronological(data.experiences));
       if (hasItems(data.certifications)) setCertifications(data.certifications);
       if (data.hero) setHero((prev) => ({ ...prev, ...Object.fromEntries(Object.entries(data.hero).filter(([, v]) => v != null && v !== "")) }));
       if (hasItems(data.about?.paragraphs)) setAbout({ paragraphs: data.about.paragraphs });

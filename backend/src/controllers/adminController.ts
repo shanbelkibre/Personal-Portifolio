@@ -86,7 +86,10 @@ export const getExperiences = async (_req: Request, res: Response) => {
   try {
     const experiences = await prisma.experience.findMany({
       include: { company: true, achievements: { orderBy: { orderIndex: "asc" } }, skills: { include: { technology: true } } },
-      orderBy: { createdAt: "desc" },
+      orderBy: [
+        { periodStart: "asc" },
+        { periodEnd: "asc" },
+      ],
     });
     const mapped = experiences.map((e) => ({
       id: e.id, role: e.role, company: e.company?.name || "",

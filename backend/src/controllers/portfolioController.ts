@@ -57,8 +57,12 @@ export const getPortfolio = async (req: Request, res: Response) => {
       }
     });
 
-    // 3. Fetch Experiences
+    // 3. Fetch Experiences ordered chronologically (2024 up to 2026+)
     const experiences = await prisma.experience.findMany({
+      orderBy: [
+        { periodStart: 'asc' },
+        { periodEnd: 'asc' },
+      ],
       include: {
         company: true,
         achievements: {
