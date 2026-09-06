@@ -190,25 +190,25 @@ All colors MUST be HSL.
     transform: translateY(-4px);
   }
 
-  /* Scroll-Triggered Reveal Animations */
+  /* Scroll-Triggered Reveal Animations - Fast & Smooth */
   .reveal-left {
     opacity: 0;
-    transform: translateX(-55px);
-    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-32px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
 
   .reveal-right {
     opacity: 0;
-    transform: translateX(55px);
-    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(32px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
 
   .reveal-up {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(24px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
 

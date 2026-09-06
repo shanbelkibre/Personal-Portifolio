@@ -68,16 +68,6 @@ const Hero = () => {
 
           {/* Hero Content Text Container — order-2 on mobile & desktop */}
           <div className="reveal-left order-2 w-full lg:w-7/12 text-center lg:text-left">
-            <div
-              className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 bg-secondary/80 dark:bg-secondary/60 rounded-full border border-border/80 dark:border-primary/25 shadow-sm"
-              style={{ animation: "hero-fade-in 0.5s ease-out both" }}
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs sm:text-sm font-semibold text-foreground">
-                {hero.badgeText}
-              </span>
-            </div>
-
             <h1
               className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 tracking-tight text-foreground"
               style={{ animation: "hero-fade-in 0.6s ease-out 0.1s both" }}
