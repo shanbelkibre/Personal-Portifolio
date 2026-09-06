@@ -32,11 +32,11 @@ const Index = () => {
         />
 
         <meta name="author" content="Shanbel Kibre" />
-        <link rel="canonical" href="https://shanbelkibredev.vercel.app/" />
+        <link rel="canonical" href="https://shanbelkibre.vercel.app/" />
 
         {/* Open Graph (LinkedIn, WhatsApp, Facebook) */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://shanbelkibredev.vercel.app/" />
+        <meta property="og:url" content="https://shanbelkibre.vercel.app/" />
         <meta
           property="og:title"
           content="Shanbel Kibre | Software Engineer & Full-Stack Developer"
@@ -45,13 +45,13 @@ const Index = () => {
           property="og:description"
           content="Software Engineer & Full-Stack Developer specializing in React, TypeScript, Node.js, and Cybersecurity. Explore my work history and projects."
         />
-        <meta property="og:image" content="https://shanbelkibredev.vercel.app/preview.png" />
+        <meta property="og:image" content="https://shanbelkibre.vercel.app/preview.png" />
         <meta property="og:site_name" content="Shanbel Kibre Portfolio" />
         <meta property="og:locale" content="en_US" />
 
         {/* Twitter/X */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://shanbelkibredev.vercel.app/" />
+        <meta name="twitter:url" content="https://shanbelkibre.vercel.app/" />
         <meta
           name="twitter:title"
           content="Shanbel Kibre | Software Engineer & Full-Stack Developer"
@@ -60,7 +60,7 @@ const Index = () => {
           name="twitter:description"
           content="Software Engineer & Full-Stack Developer specializing in React, TypeScript, Node.js, and Cybersecurity."
         />
-        <meta name="twitter:image" content="https://shanbelkibredev.vercel.app/preview.png" />
+        <meta name="twitter:image" content="https://shanbelkibre.vercel.app/preview.png" />
 
         {/* Profile Links */}
         <link rel="me" href="https://www.linkedin.com/in/shanbel-kibre/" />
@@ -72,8 +72,8 @@ const Index = () => {
             "@context": "https://schema.org",
             "@type": "Person",
             "name": "Shanbel Kibre",
-            "url": "https://shanbelkibredev.vercel.app/",
-            "image": "https://shanbelkibredev.vercel.app/preview.png",
+            "url": "https://shanbelkibre.vercel.app/",
+            "image": "https://shanbelkibre.vercel.app/preview.png",
             "jobTitle": "Software Engineer & Full-Stack Developer",
             "description":
               "Software Engineer and Full-Stack Developer with hands-on expertise in cybersecurity and penetration testing.",
