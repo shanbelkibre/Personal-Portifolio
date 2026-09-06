@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Default Light mode colors (Cyan accent default) */
+    /* Default Light mode colors (Rich, high-contrast Cyan accent) */
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 
@@ -18,14 +18,14 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
 
-    --primary: 188 94% 40%;
+    --primary: 199 90% 32%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 46%;
+    --muted-foreground: 215 16% 40%;
 
     --accent: 210 40% 96%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -35,14 +35,16 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 188 94% 40%;
+    --ring: 199 90% 32%;
 
     --radius: 0.75rem;
 
+    --bg-overlay: 0.94;
+
     /* Custom design tokens - Light mode */
-    --gradient-primary: linear-gradient(135deg, hsl(188 94% 40%), hsl(217 91% 60%));
-    --gradient-glow: linear-gradient(135deg, hsl(188 94% 40% / 0.15), hsl(217 91% 60% / 0.1));
-    --shadow-glow: 0 0 40px hsl(188 94% 40% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(199 90% 32%), hsl(217 91% 54%));
+    --gradient-glow: linear-gradient(135deg, hsl(199 90% 32% / 0.12), hsl(217 91% 54% / 0.08));
+    --shadow-glow: 0 0 35px hsl(199 90% 32% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -76,6 +78,8 @@ All colors MUST be HSL.
     --input: 217.2 32.6% 22%;
     --ring: 188 94% 45%;
 
+    --bg-overlay: 0.82;
+
     /* Custom design tokens - Dark mode */
     --gradient-primary: linear-gradient(135deg, hsl(188 94% 45%), hsl(217 91% 60%));
     --gradient-glow: linear-gradient(135deg, hsl(188 94% 45% / 0.2), hsl(217 91% 60% / 0.1));
@@ -84,6 +88,12 @@ All colors MUST be HSL.
 
   /* Dynamic Theme Presets */
   html[data-theme-preset="cyan"] {
+    --primary: 199 90% 32%;
+    --ring: 199 90% 32%;
+    --gradient-primary: linear-gradient(135deg, hsl(199 90% 32%), hsl(217 91% 54%));
+  }
+  .dark html[data-theme-preset="cyan"],
+  html.dark[data-theme-preset="cyan"] {
     --primary: 188 94% 45%;
     --ring: 188 94% 45%;
     --gradient-primary: linear-gradient(135deg, hsl(188 94% 45%), hsl(217 91% 60%));
@@ -91,6 +101,12 @@ All colors MUST be HSL.
   }
 
   html[data-theme-preset="emerald"] {
+    --primary: 160 84% 34%;
+    --ring: 160 84% 34%;
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 34%), hsl(188 94% 38%));
+  }
+  .dark html[data-theme-preset="emerald"],
+  html.dark[data-theme-preset="emerald"] {
     --primary: 160 84% 42%;
     --ring: 160 84% 42%;
     --gradient-primary: linear-gradient(135deg, hsl(160 84% 42%), hsl(188 94% 45%));
@@ -98,6 +114,12 @@ All colors MUST be HSL.
   }
 
   html[data-theme-preset="violet"] {
+    --primary: 262 83% 54%;
+    --ring: 262 83% 54%;
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 54%), hsl(330 81% 52%));
+  }
+  .dark html[data-theme-preset="violet"],
+  html.dark[data-theme-preset="violet"] {
     --primary: 262 83% 62%;
     --ring: 262 83% 62%;
     --gradient-primary: linear-gradient(135deg, hsl(262 83% 62%), hsl(330 81% 60%));
@@ -105,6 +127,12 @@ All colors MUST be HSL.
   }
 
   html[data-theme-preset="amber"] {
+    --primary: 32 95% 42%;
+    --ring: 32 95% 42%;
+    --gradient-primary: linear-gradient(135deg, hsl(32 95% 42%), hsl(12 88% 48%));
+  }
+  .dark html[data-theme-preset="amber"],
+  html.dark[data-theme-preset="amber"] {
     --primary: 38 92% 50%;
     --ring: 38 92% 50%;
     --gradient-primary: linear-gradient(135deg, hsl(38 92% 50%), hsl(12 88% 55%));
@@ -112,6 +140,12 @@ All colors MUST be HSL.
   }
 
   html[data-theme-preset="blue"] {
+    --primary: 221 83% 46%;
+    --ring: 221 83% 46%;
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 46%), hsl(262 83% 54%));
+  }
+  .dark html[data-theme-preset="blue"],
+  html.dark[data-theme-preset="blue"] {
     --primary: 221 83% 53%;
     --ring: 221 83% 53%;
     --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(262 83% 62%));
@@ -143,7 +177,7 @@ All colors MUST be HSL.
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-blue-600 dark:to-blue-400 bg-clip-text text-transparent;
   }
 
   .card-glow {

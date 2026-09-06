@@ -20,7 +20,7 @@ const Hero = () => {
     >
       {/* Decorative gradient blobs */}
       <div
-        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none opacity-30 dark:opacity-100"
         style={{
           background:
             "radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)",
@@ -28,7 +28,7 @@ const Hero = () => {
         }}
       />
       <div
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full pointer-events-none"
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full pointer-events-none opacity-30 dark:opacity-100"
         style={{
           background:
             "radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 70%)",
@@ -46,7 +46,7 @@ const Hero = () => {
           >
             <div className="relative">
               <div
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-full opacity-50 dark:opacity-100"
                 style={{
                   background:
                     "radial-gradient(circle, hsl(var(--primary) / 0.35) 0%, transparent 70%)",
@@ -55,7 +55,7 @@ const Hero = () => {
                 }}
               />
               <div
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-full opacity-40 dark:opacity-100"
                 style={{
                   background:
                     "radial-gradient(circle, hsl(var(--primary) / 0.18) 0%, transparent 70%)",
@@ -79,17 +79,17 @@ const Hero = () => {
           {/* Hero Content Text Container — order-2 on mobile & desktop */}
           <div className="order-2 w-full lg:w-7/12 text-center lg:text-left">
             <div
-              className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-secondary/60 rounded-full border border-primary/25 shadow-md"
+              className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-secondary/80 dark:bg-secondary/60 rounded-full border border-border/80 dark:border-primary/25 shadow-sm"
               style={{ animation: "hero-fade-in 0.5s ease-out both" }}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">
+              <span className="text-xs sm:text-sm font-semibold text-foreground">
                 {hero.badgeText}
               </span>
             </div>
 
             <h1
-              className="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-3 tracking-tight"
+              className="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-3 tracking-tight text-foreground"
               style={{ animation: "hero-fade-in 0.6s ease-out 0.1s both" }}
             >
               Hi, I'm{" "}
@@ -97,7 +97,7 @@ const Hero = () => {
             </h1>
 
             <p
-              className="text-lg sm:text-2xl font-bold text-primary/90 mb-4"
+              className="text-lg sm:text-2xl font-bold text-primary dark:text-primary mb-4"
               style={{ animation: "hero-fade-in 0.6s ease-out 0.2s both" }}
             >
               {hero.subtitle}

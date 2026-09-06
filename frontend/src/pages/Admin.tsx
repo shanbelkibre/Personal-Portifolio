@@ -65,7 +65,7 @@ const Admin: React.FC = () => {
               <Shield className="w-7 h-7 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Admin Access</h1>
-            <p className="text-sm text-muted-foreground mt-1 text-center">Portfolio Content Management System</p>
+
           </div>
 
           {/* Error */}
