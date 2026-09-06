@@ -6,9 +6,9 @@ import { useTheme } from "next-themes";
 const NAV_LINKS = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
+  { href: "#projects", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
   { href: "#contact", label: "Contact" },
 ];
 

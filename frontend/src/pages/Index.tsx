@@ -104,9 +104,9 @@ const Index = () => {
         <Navigation />
         <Hero />
         <About />
+        <Projects />
         <Skills />
         <Experience />
-        <Projects />
         <Contact />
 
         <footer className="py-8 border-t border-border/40 text-center text-sm text-muted-foreground">
