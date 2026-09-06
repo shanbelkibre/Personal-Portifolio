@@ -260,7 +260,8 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const apiBase = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://personal-portifolio-ltpq.onrender.com");
+      const response = await fetch(`${apiBase}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
