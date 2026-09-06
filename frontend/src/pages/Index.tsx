@@ -6,9 +6,12 @@ import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Index = () => {
+  useScrollReveal();
+
   return (
     <>
       <Helmet>

@@ -189,4 +189,33 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-glow);
     transform: translateY(-4px);
   }
+
+  /* Scroll-Triggered Reveal Animations */
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-55px);
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(55px);
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-left.revealed,
+  .reveal-right.revealed,
+  .reveal-up.revealed {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }

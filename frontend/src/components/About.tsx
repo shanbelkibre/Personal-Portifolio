@@ -36,7 +36,7 @@ const About = () => {
     <section id="about" className="py-20 md:py-28 relative">
       <div className="container max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-12 md:mb-16 reveal-up">
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
             About <span className="text-gradient">Me</span>
           </h2>
@@ -48,7 +48,7 @@ const About = () => {
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* Left Card: My Story & Personal Info */}
-          <div className="bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-primary/40 transition-colors duration-300">
+          <div className="reveal-left bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-primary/40 transition-colors duration-300">
             <div>
               <div className="mb-5">
                 <div className="flex items-center gap-2.5">
@@ -153,7 +153,7 @@ const About = () => {
           </div>
 
           {/* Right Card: Interests, Goals & What I Bring */}
-          <div className="bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-primary/40 transition-colors duration-300">
+          <div className="reveal-right bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-primary/40 transition-colors duration-300">
             <div>
               {/* Interests & Goals */}
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-5">

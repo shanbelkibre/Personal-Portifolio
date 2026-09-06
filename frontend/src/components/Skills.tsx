@@ -71,7 +71,7 @@ const Skills = () => {
       `}</style>
 
       <div className="container max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl md:text-5xl font-extrabold mb-16 text-center tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-extrabold mb-16 text-center tracking-tight reveal-up">
           <span className="text-primary uppercase">TECHNICAL TOOLKIT</span>
         </h2>
 
@@ -80,12 +80,13 @@ const Skills = () => {
             const Icon = skill.icon;
             // Next.js, Express, GitHub are black by default. Invert them in dark mode.
             const isBlackIcon = ["#000000", "#181717"].includes(skill.color);
+            const sideClass = index % 2 === 0 ? "reveal-left" : "reveal-right";
 
             return (
               <div
                 key={skill.name}
-                className="skill-card flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 transition-all duration-300 cursor-default group"
-                style={{ animationDelay: `${index * 0.05}s` }}
+                className={`skill-card ${sideClass} flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 transition-all duration-300 cursor-default group`}
+                style={{ transitionDelay: `${(index % 4) * 0.08}s` }}
               >
                 <Icon
                   className={`w-12 h-12 md:w-14 md:h-14 mb-4 group-hover:scale-110 transition-transform duration-300 ${isBlackIcon ? 'icon-black' : ''}`}

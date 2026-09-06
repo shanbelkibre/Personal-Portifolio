@@ -10,7 +10,7 @@ export const Experience: React.FC = () => {
     <section id="experience" className="py-20 relative">
       <div className="container max-w-6xl mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 reveal-up">
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
             <span className="text-primary uppercase">WORK HISTORY & </span><span className="text-gradient uppercase">EXPERIENCE</span>
           </h2>
@@ -21,7 +21,7 @@ export const Experience: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Main Experience Timeline Column (8 cols) */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="reveal-left lg:col-span-8 space-y-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl bg-primary/10 text-primary">
                 <Briefcase className="w-6 h-6" />
@@ -86,7 +86,7 @@ export const Experience: React.FC = () => {
           </div>
 
           {/* Education & Certifications Sidebar (4 cols) */}
-          <div className="lg:col-span-4 space-y-8">
+          <div className="reveal-right lg:col-span-4 space-y-8">
             {/* Education Card */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">

@@ -82,7 +82,7 @@ const Contact = () => {
     <section id="contact" className="pb-20 py-20">
       <div className="container max-w-5xl mx-auto px-4">
         {/* Section Title */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 reveal-up">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-3">
             Get In <span className="text-gradient">Touch</span>
           </h2>
@@ -93,7 +93,7 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Direct Contact Card (5 cols) */}
-          <div className="lg:col-span-5 flex">
+          <div className="reveal-left lg:col-span-5 flex">
             <Card className="w-full p-6 sm:p-8 bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col justify-between space-y-4">
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-foreground mb-4">
@@ -161,7 +161,7 @@ const Contact = () => {
           </div>
 
           {/* EmailJS Contact Form (7 cols) */}
-          <div className="lg:col-span-7 flex" id="email">
+          <div className="reveal-right lg:col-span-7 flex" id="email">
             <Card className="w-full p-6 sm:p-8 bg-card/70 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col justify-between">
               <div>
                 <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">

@@ -106,7 +106,7 @@ const Projects = () => {
       `}</style>
 
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 reveal-up">
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
             <span className="text-primary uppercase">FEATURED </span><span className="text-gradient uppercase">PROJECTS</span>
           </h2>
@@ -116,13 +116,15 @@ const Projects = () => {
         </div>
 
         <div className="projects-grid grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <Card
-              key={project.id || project.title}
-              className="project-card card-animate flex flex-col border-border overflow-hidden p-0 cursor-pointer group"
-              style={{ animationDelay: `${index * 0.1}s` }}
-              onClick={() => setSelectedProject(project)}
-            >
+          {projects.map((project, index) => {
+            const sideClass = index % 2 === 0 ? "reveal-left" : "reveal-right";
+            return (
+              <Card
+                key={project.id || project.title}
+                className={`project-card ${sideClass} flex flex-col border-border overflow-hidden p-0 cursor-pointer group`}
+                style={{ transitionDelay: `${(index % 3) * 0.1}s` }}
+                onClick={() => setSelectedProject(project)}
+              >
               {/* Image Frame with Margin and White Padding (Full image visible, not cropped) */}
               <div className="p-3.5 sm:p-4 pb-0">
                 <div
@@ -219,7 +221,8 @@ const Projects = () => {
                 </div>
               </div>
             </Card>
-          ))}
+            );
+          })}
         </div>
       </div>
 
